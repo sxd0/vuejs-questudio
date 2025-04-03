@@ -14,7 +14,7 @@
     <div v-else-if="!question" class="text-center my-8">
       <v-icon icon="mdi-help-circle-outline" size="large" class="mb-4"></v-icon>
       <h2 class="text-h5 mb-4">Вопрос не найден</h2>
-      <p class="text-body-1 mb-6">Возможно, вопрос был удален или у вас неверная ссылка.</p>
+      <p class="text-body-1 mb-6">Возможно, вопрос был удалён или у вас неверная ссылка.</p>
       <v-btn color="primary" to="/" prepend-icon="mdi-arrow-left">
         Вернуться на главную
       </v-btn>
@@ -63,8 +63,8 @@
           
           <v-divider class="mb-3"></v-divider>
           
-          <div class="d-flex justify-space-between align-center">
-            <div class="d-flex align-center">
+          <div class="d-flex justify-space-between align-center flex-wrap">
+            <div class="d-flex align-center mb-2">
               <v-btn-group variant="outlined" density="comfortable">
                 <v-btn @click="handleVote(question.id, 'up', true)" prepend-icon="mdi-thumb-up">
                   {{ question.vote_count > 0 ? '+' + question.vote_count : question.vote_count }}
@@ -76,6 +76,7 @@
                 variant="text" 
                 class="ml-2" 
                 :prepend-icon="isBookmarked(questionId) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                :color="isBookmarked(questionId) ? 'warning' : undefined"
                 @click="handleToggleBookmark(questionId)"
               >
                 {{ isBookmarked(questionId) ? 'Сохранено' : 'Сохранить' }}
@@ -207,8 +208,8 @@
             
             <v-divider class="mb-3"></v-divider>
             
-            <div class="d-flex justify-space-between align-center">
-              <div class="d-flex align-center">
+            <div class="d-flex justify-space-between align-center flex-wrap">
+              <div class="d-flex align-center mb-2">
                 <v-btn-group variant="outlined" density="comfortable">
                   <v-btn @click="handleVote(answer.id, 'up', false)" prepend-icon="mdi-thumb-up">
                     {{ answer.vote_count > 0 ? '+' + answer.vote_count : answer.vote_count }}
@@ -258,74 +259,31 @@
       
       <div v-else class="text-center my-8">
         <v-icon icon="mdi-message-text-outline" size="large" class="mb-4"></v-icon>
-        <p class="text-body-1 mb-4">На этот вопрос еще нет ответов.</p>
+        <p class="text-body-1 mb-4">На этот вопрос ещё нет ответов.</p>
         <p class="text-body-2 text-medium-emphasis mb-6">Станьте первым, кто даст ответ!</p>
       </div>
       
       <!-- Форма добавления ответа -->
-      <v-card class="mt-8" variant="outlined">
-        <v-card-title class="d-flex align-center">
-          <v-icon icon="mdi-message-plus" class="mr-2"></v-icon>
-          Ваш ответ
-        </v-card-title>
-        
-        <v-card-text>
-          <v-textarea
-            v-model="newAnswer"
-            rows="8"
-            placeholder="Напишите свой ответ..."
-            variant="outlined"
-            counter
-            :hint="newAnswer.length ? 'Еще ' + (30 - Math.min(newAnswer.length, 30)) + ' символов до минимальной длины' : ''"
-            class="mb-2"
-          ></v-textarea>
-          
-          <v-alert
-            v-if="newAnswer.length > 0 && newAnswer.length < 30"
-            type="info"
-            variant="tonal"
-            density="compact"
-            icon="mdi-information"
-            class="mb-4"
-          >
-            Ответ должен содержать не менее 30 символов.
-          </v-alert>
-        </v-card-text>
-        
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn 
-            color="primary" 
-            @click="handleSubmitAnswer"
-            :disabled="newAnswer.length < 30"
-            :loading="submittingAnswer"
-            size="large"
-          >
-            Опубликовать ответ
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-      
-      <v-alert
-        class="mt-6"
-        type="info"
-        variant="tonal"
-        title="Что делает хороший ответ?"
-        text="Хороший ответ четко и конкретно отвечает на вопрос, подкреплен примерами и объяснениями. По возможности, добавьте ссылки на официальную документацию или другие авторитетные источники."
-        icon="mdi-lightbulb-on"
-      ></v-alert>
+      <AnswerForm 
+        class="mt-8"
+        :loading="submittingAnswer"
+        @submit="handleSubmitAnswer"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import AnswerForm from '@/components/AnswerForm.vue';
 
 export default {
   name: 'QuestionDetailView',
+  components: {
+    AnswerForm
+  },
   data() {
     return {
-      newAnswer: '',
       newComment: '',
       showComments: false,
       submittingAnswer: false
@@ -417,16 +375,12 @@ export default {
       });
     },
     
-    async handleSubmitAnswer() {
-      if (this.newAnswer.trim().length < 30) {
-        return;
-      }
-      
+    async handleSubmitAnswer(answerBody) {
       this.submittingAnswer = true;
       
       const answerData = {
         title: '',
-        body: this.newAnswer.trim()
+        body: answerBody
       };
       
       try {
@@ -435,7 +389,8 @@ export default {
           answerData 
         });
         
-        this.newAnswer = '';
+        // Форма будет сброшена через ref в компоненте
+        this.$refs.answerForm?.resetForm();
       } catch (error) {
         console.error('Error submitting answer:', error);
       } finally {
@@ -469,8 +424,8 @@ export default {
 }
 
 .comment {
-  border-left: 3px solid rgba(var(--v-theme-primary), 0.5);
-  background-color: rgba(var(--v-theme-surface-variant), 0.1);
+  border-left: 3px solid rgba(37, 99, 235, 0.5);
+  background-color: rgba(30, 41, 59, 0.3);
   border-radius: 4px;
   margin-bottom: 8px;
 }
@@ -486,7 +441,7 @@ export default {
   
   .v-card {
     box-shadow: none !important;
-    border: 1px solid #ddd !important;
+    border: 1px solid #2D3748 !important;
     break-inside: avoid;
   }
   
@@ -496,8 +451,8 @@ export default {
   }
   
   .accepted-answer {
-    border: 1px solid #2e7d32 !important;
-    background-color: #f1f8e9 !important;
+    border: 1px solid #10B981 !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
   }
 }
 </style>

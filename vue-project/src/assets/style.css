@@ -1,0 +1,117 @@
+/* Основные стили для тёмной темы */
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background-color: #000000 !important;
+  color: #E2E8F0;
+}
+
+/* Улучшение читаемости текста */
+.text-body-1, .text-body-2 {
+  line-height: 1.7;
+}
+
+/* Свечение для кнопок */
+.v-btn--variant-elevated.primary {
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.4) !important;
+}
+
+.v-btn--variant-elevated.success {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+.v-btn--variant-elevated.error {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Кастомные скроллбары */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2D3748;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4A5568;
+}
+
+/* Блоки кода */
+code {
+  background-color: #1E1E1E;
+  color: #E2E8F0;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  background-color: #1E1E1E;
+  color: #E2E8F0;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Анимации */
+.v-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.v-btn:hover {
+  transform: translateY(-2px);
+}
+
+.question-title {
+  transition: all 0.2s ease-in-out;
+}
+
+.question-title:hover {
+  color: #3B82F6 !important;
+  text-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+/* Стили для карточек */
+.v-card.v-theme--customDarkTheme.v-card--variant-elevated {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  background-color: #121212 !important;
+}
+
+.v-card.v-theme--customDarkTheme.v-card--variant-outlined {
+  border-color: #2D3748 !important;
+  background-color: #121212 !important;
+}
+
+.v-card.v-theme--customDarkTheme.v-card--variant-tonal {
+  background-color: #1E293B !important;
+}
+
+/* Адаптивный дизайн для мобильных устройств */
+@media (max-width: 600px) {
+  .v-container {
+    padding: 8px !important;
+  }
+  
+  .v-card-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-h4 {
+    font-size: 1.5rem !important;
+  }
+}

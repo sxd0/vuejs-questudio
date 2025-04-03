@@ -3,17 +3,17 @@
     <v-app-bar flat>
       <v-app-bar-title class="font-weight-bold">
         <v-icon icon="mdi-help-circle-outline" class="mr-2"></v-icon>
-        QuestUdio
+        <span class="gradient-text">QuestUdio</span>
       </v-app-bar-title>
       
       <v-spacer></v-spacer>
       
-      <v-btn to="/" variant="text">
+      <v-btn to="/" variant="text" class="mx-1">
         <v-icon icon="mdi-home" class="mr-1"></v-icon>
         Главная
       </v-btn>
       
-      <v-btn to="/json" variant="text">
+      <v-btn to="/json" variant="text" class="mx-1">
         <v-icon icon="mdi-code-json" class="mr-1"></v-icon>
         JSON
       </v-btn>
@@ -22,6 +22,7 @@
         href="https://github.com/yourusername/vuejs-questudio" 
         target="_blank"
         variant="text"
+        class="mx-1"
       >
         <v-icon icon="mdi-github" class="mr-1"></v-icon>
         Репозиторий
@@ -32,7 +33,7 @@
       <!-- Компонент уведомлений -->
       <v-menu>
         <template v-slot:activator="{ props }">
-          <v-btn icon v-bind="props" class="mr-1">
+          <v-btn icon v-bind="props" class="mx-1">
             <v-badge
               :content="unreadNotificationsCount"
               :model-value="unreadNotificationsCount > 0"
@@ -43,7 +44,7 @@
           </v-btn>
         </template>
         
-        <v-card min-width="350" max-width="400">
+        <v-card min-width="350" max-width="400" class="notification-menu">
           <v-card-title class="d-flex align-center">
             <span>Уведомления</span>
             <v-spacer></v-spacer>
@@ -115,13 +116,6 @@
             </v-list-item-title>
           </v-list-item>
           
-          <v-list-item @click="toggleDarkMode">
-            <v-list-item-title>
-              <v-icon :icon="darkMode ? 'mdi-white-balance-sunny' : 'mdi-moon-waning-crescent'" class="mr-2"></v-icon>
-              {{ darkMode ? 'Светлая тема' : 'Темная тема' }}
-            </v-list-item-title>
-          </v-list-item>
-          
           <v-divider></v-divider>
           
           <v-list-item>
@@ -144,7 +138,7 @@
       <v-row justify="center" no-gutters>
         <v-col cols="12" md="8" class="text-center">
           <div class="text-body-2">
-             {{ new Date().getFullYear() }}  <strong>QuestUdio</strong>  Платформа вопросов и ответов для разработчиков
+             {{ new Date().getFullYear() }}  <strong class="gradient-text">QuestUdio</strong>  Платформа вопросов и ответов для разработчиков
           </div>
           <div class="mt-1 text-caption text-medium-emphasis">
             Разработано с <v-icon icon="mdi-heart" size="small" color="error"></v-icon> на Vue.js
@@ -175,6 +169,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import '@/assets/style.css';
 
 export default {
   name: 'App',
@@ -239,6 +234,9 @@ export default {
     }
   },
   mounted() {
+    // Убедимся, что вся страница имеет чёрный фон
+    document.body.style.backgroundColor = '#000000';
+    
     // Подписка на события для отображения уведомлений
     this.$watch(
       () => this.notifications,
@@ -257,6 +255,7 @@ export default {
 <style>
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: #000000 !important;
 }
 
 .v-application {
@@ -264,6 +263,25 @@ body {
 }
 
 .notification-list .unread {
-  background-color: rgba(var(--v-theme-primary), 0.08);
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.notification-menu {
+  background-color: #121212 !important;
+  border: 1px solid #2D3748 !important;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #2563EB, #10B981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Тёмная тема для диалогов */
+.v-dialog > .v-card {
+  background-color: #121212 !important;
+  border: 1px solid #2D3748 !important;
 }
 </style>

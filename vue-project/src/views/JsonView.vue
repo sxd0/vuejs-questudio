@@ -10,7 +10,7 @@
       class="mb-6"
     ></v-alert>
     
-    <v-card variant="outlined">
+    <v-card variant="outlined" class="json-card">
       <v-card-title class="d-flex align-center">
         <v-icon icon="mdi-code-json" class="mr-2"></v-icon>
         main.json
@@ -117,16 +117,22 @@ export default {
 </script>
 
 <style scoped>
+.json-card {
+  background-color: #121212 !important;
+  border-color: #2D3748 !important;
+}
+
 .json-content {
   white-space: pre-wrap;
   word-break: break-word;
   max-height: 70vh;
   overflow-y: auto;
   padding: 1rem;
-  font-family: monospace;
+  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', monospace;
   border-radius: 4px;
   line-height: 1.5;
   font-size: 14px;
-  background-color: rgba(var(--v-theme-surface-variant), 0.1);
+  background-color: #1E1E1E;
+  color: #E2E8F0;
 }
 </style>

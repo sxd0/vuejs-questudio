@@ -4,7 +4,7 @@
       <v-col cols="12" md="8">
         <h1 class="text-h4 mb-6">Вопросы и ответы по программированию</h1>
       
-        <v-card flat class="mb-6">
+        <v-card flat class="mb-6 search-card">
           <v-card-text>
             <v-row>
               <v-col cols="12" md="7">
@@ -68,7 +68,7 @@
           <!-- Статистика -->
           <v-row class="mb-6">
             <v-col cols="12" sm="4">
-              <v-card variant="tonal" class="text-center">
+              <v-card variant="tonal" class="text-center stat-card">
                 <v-card-text>
                   <div class="text-h5">{{ getTotalQuestions }}</div>
                   <div>Всего вопросов</div>
@@ -77,7 +77,7 @@
             </v-col>
             
             <v-col cols="12" sm="4">
-              <v-card variant="tonal" class="text-center">
+              <v-card variant="tonal" class="text-center stat-card">
                 <v-card-text>
                   <div class="text-h5">{{ getTotalAnswers }}</div>
                   <div>Всего ответов</div>
@@ -86,7 +86,7 @@
             </v-col>
             
             <v-col cols="12" sm="4">
-              <v-card variant="tonal" class="text-center">
+              <v-card variant="tonal" class="text-center stat-card">
                 <v-card-text>
                   <div class="text-h5">{{ getAnsweredPercentage }}%</div>
                   <div>Вопросов с ответами</div>
@@ -111,18 +111,16 @@
           <v-card 
             v-for="question in filteredQuestions.slice(0, visibleCount)" 
             :key="question.id" 
-            class="mb-4"
+            class="mb-4 question-card"
             variant="outlined"
             :ripple="true"
+            :to="'/question/' + question.id"
           >
             <v-card-item>
               <div class="d-flex align-center">
-                <router-link 
-                  :to="'/question/' + question.id" 
-                  class="question-title text-h6 d-block mb-2 text-decoration-none flex-grow-1"
-                >
+                <div class="question-title text-h6 d-block mb-2 text-decoration-none flex-grow-1">
                   {{ question.title }}
-                </router-link>
+                </div>
                 
                 <v-btn
                   v-if="isBookmarked(question.id)"
@@ -217,14 +215,14 @@
               size="large"
               prepend-icon="mdi-chevron-down"
             >
-              Показать еще вопросы
+              Показать ещё вопросы
             </v-btn>
           </div>
         </div>
       </v-col>
       
       <v-col cols="12" md="4">
-        <v-card class="mb-6">
+        <v-card class="mb-6 sidebar-card">
           <v-card-title>
             <v-icon icon="mdi-tag-multiple" class="mr-2"></v-icon>
             Популярные теги
@@ -235,7 +233,7 @@
               v-for="tag in getPopularTags(10)"
               :key="tag.id"
               class="mr-2 mb-2"
-              :color="selectedTag === tag.id ? 'primary' : 'default'"
+              :color="selectedTag === tag.id ? 'primary' : undefined"
               :variant="selectedTag === tag.id ? 'flat' : 'outlined'"
               @click="selectTag(tag)"
             >
@@ -245,7 +243,7 @@
           </v-card-text>
         </v-card>
         
-        <v-card class="mb-6">
+        <v-card class="mb-6 sidebar-card">
           <v-card-title>
             <v-icon icon="mdi-account-group" class="mr-2"></v-icon>
             Лучшие участники
@@ -270,7 +268,7 @@
           </v-list>
         </v-card>
         
-        <v-card v-if="bookmarks.length > 0" class="mb-6">
+        <v-card v-if="bookmarks.length > 0" class="mb-6 sidebar-card">
           <v-card-title>
             <v-icon icon="mdi-bookmark-multiple" class="mr-2"></v-icon>
             Ваши закладки
@@ -302,7 +300,7 @@
           </v-list>
         </v-card>
         
-        <v-card>
+        <v-card class="sidebar-card">
           <v-card-title>
             <v-icon icon="mdi-information-outline" class="mr-2"></v-icon>
             О проекте
@@ -333,83 +331,31 @@
           location="bottom right"
           size="large"
           icon
-          class="ma-4"
+          class="ma-4 glow-button"
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
       
-      <v-card>
-        <v-card-title class="d-flex align-center">
-          <v-icon icon="mdi-help-circle-outline" class="mr-2"></v-icon>
-          Задать новый вопрос
-        </v-card-title>
-        
-        <v-divider></v-divider>
-        
-        <v-card-text class="pt-4">
-          <v-form ref="form">
-            <v-text-field
-              v-model="newQuestion.title"
-              label="Заголовок вопроса"
-              required
-              counter="150"
-              hint="Сформулируйте вопрос так, чтобы на него можно было дать конкретный ответ"
-              variant="outlined"
-              class="mb-4"
-            ></v-text-field>
-            
-            <v-textarea
-              v-model="newQuestion.body"
-              label="Подробное описание вопроса"
-              required
-              counter
-              hint="Подробно опишите вашу проблему и что вы уже пробовали сделать"
-              rows="8"
-              variant="outlined"
-              class="mb-4"
-            ></v-textarea>
-            
-            <v-combobox
-              v-model="newQuestion.tags"
-              :items="tagItems"
-              label="Выберите теги"
-              multiple
-              chips
-              hint="Выберите до 5 тегов, которые относятся к вашему вопросу"
-              variant="outlined"
-            ></v-combobox>
-          </v-form>
-        </v-card-text>
-        
-        <v-divider></v-divider>
-        
-        <v-card-actions>
-          <v-btn color="default" variant="text" @click="showQuestionDialog = false">
-            <v-icon icon="mdi-close" class="mr-1"></v-icon>
-            Отмена
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn 
-            color="primary" 
-            @click="handleSubmitQuestion"
-            :disabled="!isQuestionFormValid"
-            :loading="submittingQuestion"
-          >
-            <v-icon icon="mdi-send" class="mr-1"></v-icon>
-            Опубликовать вопрос
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <QuestionForm 
+        :tag-items="tagItems"
+        :loading="submittingQuestion"
+        @submit="handleSubmitQuestion"
+        @cancel="showQuestionDialog = false"
+      />
     </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import QuestionForm from '@/components/QuestionForm.vue';
 
 export default {
   name: 'HomeView',
+  components: {
+    QuestionForm
+  },
   data() {
     return {
       searchQuery: '',
@@ -419,11 +365,6 @@ export default {
       visibleCount: 5,
       showQuestionDialog: false,
       submittingQuestion: false,
-      newQuestion: {
-        title: '',
-        body: '',
-        tags: []
-      },
       sortOptions: [
         { title: 'Новые вначале', value: 'newest' },
         { title: 'Популярные', value: 'popular' },
@@ -462,14 +403,6 @@ export default {
         title: tag.name,
         value: tag.id
       }));
-    },
-    
-    isQuestionFormValid() {
-      return (
-        this.newQuestion.title.trim().length >= 15 &&
-        this.newQuestion.body.trim().length >= 30 &&
-        this.newQuestion.tags.length > 0
-      );
     }
   },
   created() {
@@ -589,29 +522,11 @@ export default {
       this.filterQuestions();
     },
     
-    async handleSubmitQuestion() {
-      if (!this.isQuestionFormValid) return;
-      
+    async handleSubmitQuestion(questionData) {
       this.submittingQuestion = true;
-      
-      const questionData = {
-        title: this.newQuestion.title,
-        body: this.newQuestion.body,
-        tags: this.newQuestion.tags.map(tag => 
-          typeof tag === 'object' ? tag.value : tag
-        )
-      };
       
       try {
         await this.createQuestion(questionData);
-        
-        // Сбрасываем форму
-        this.newQuestion = {
-          title: '',
-          body: '',
-          tags: []
-        };
-        
         this.showQuestionDialog = false;
         this.filterQuestions();
       } catch (error) {
@@ -631,7 +546,25 @@ export default {
 }
 
 .question-title:hover {
-  color: var(--v-primary-base);
+  color: var(--v-theme-primary);
+  text-shadow: 0 0 5px rgba(37, 99, 235, 0.2);
+}
+
+.search-card, .sidebar-card, .stat-card, .question-card {
+  background-color: #121212 !important;
+  border-color: #2D3748 !important;
+}
+
+.search-card {
+  border: none !important;
+}
+
+.stat-card {
+  background-color: #1E293B !important;
+}
+
+.glow-button {
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.5) !important;
 }
 
 @media print {

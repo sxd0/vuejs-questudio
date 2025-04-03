@@ -1,0 +1,191 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johndoe",
+      "email": "john@example.com",
+      "hashed_password": "hashedpassword123",
+      "reputation": 120,
+      "created_at": "2023-01-15T10:30:00Z",
+      "last_login": "2023-06-10T15:45:00Z",
+      "is_visible": true
+    },
+    {
+      "id": 2,
+      "username": "janedoe",
+      "email": "jane@example.com",
+      "hashed_password": "hashedpassword456",
+      "reputation": 85,
+      "created_at": "2023-02-20T09:15:00Z",
+      "last_login": "2023-06-12T11:20:00Z",
+      "is_visible": true
+    },
+    {
+      "id": 3,
+      "username": "bobsmith",
+      "email": "bob@example.com",
+      "hashed_password": "hashedpassword789",
+      "reputation": 230,
+      "created_at": "2022-11-05T14:20:00Z",
+      "last_login": "2023-06-11T16:30:00Z",
+      "is_visible": true
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "javascript",
+      "description": "JavaScript  мультипарадигменный язык программирования."
+    },
+    {
+      "id": 2,
+      "name": "vue.js",
+      "description": "Vue.js  JavaScript-фреймворк для создания пользовательских интерфейсов."
+    },
+    {
+      "id": 3,
+      "name": "css",
+      "description": "CSS  язык таблиц стилей, используемый для описания оформления документа."
+    },
+    {
+      "id": 4,
+      "name": "html",
+      "description": "HTML  стандартизированный язык разметки документов для просмотра веб-страниц."
+    },
+    {
+      "id": 5,
+      "name": "api",
+      "description": "API  описание способов взаимодействия между компонентами программных систем."
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "title": "Как правильно использовать Vuex в приложении Vue.js?",
+      "body": "Я недавно начал изучать Vue.js и столкнулся с Vuex. Не могу понять, как правильно организовать хранилище и когда его лучше использовать вместо обычных пропсов. Можете поделиться лучшими практиками?",
+      "author_id": 1,
+      "created_at": "2023-06-01T10:15:00Z",
+      "updated_at": "2023-06-01T10:15:00Z",
+      "views": 45,
+      "is_closed": false,
+      "is_visible": true,
+      "is_accepted": false,
+      "post_type": "question",
+      "vote_count": 5,
+      "tags": [1, 2],
+      "answers": [
+        {
+          "id": 2,
+          "title": "",
+          "body": "Vuex лучше всего использовать, когда вам нужно хранить состояние, которое используется в нескольких компонентах. Вот пример базовой структуры Vuex-хранилища:\n\n`js\nconst store = createStore({\n  state: {\n    count: 0\n  },\n  mutations: {\n    increment(state) {\n      state.count++\n    }\n  },\n  actions: {\n    increment(context) {\n      context.commit('increment')\n    }\n  },\n  getters: {\n    doubleCount(state) {\n      return state.count * 2\n    }\n  }\n})\n`\n\nОсновные правила:\n1. Никогда не изменяйте состояние напрямую, только через мутации\n2. Мутации должны быть синхронными\n3. Для асинхронных операций используйте действия\n4. Используйте геттеры для вычисляемых значений состояния",
+          "author_id": 3,
+          "created_at": "2023-06-01T11:23:00Z",
+          "updated_at": "2023-06-01T13:45:00Z",
+          "views": 0,
+          "is_closed": false,
+          "is_visible": true,
+          "is_accepted": true,
+          "post_type": "answer",
+          "vote_count": 8,
+          "parent_id": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Как создать адаптивную сетку с использованием CSS Grid?",
+      "body": "Я хочу создать адаптивную сетку для галереи изображений. Раньше использовал Flexbox, но слышал, что CSS Grid более подходящий инструмент для двумерных макетов. Как правильно настроить CSS Grid для адаптивной галереи?",
+      "author_id": 2,
+      "created_at": "2023-06-02T15:30:00Z",
+      "updated_at": "2023-06-02T15:30:00Z",
+      "views": 32,
+      "is_closed": false,
+      "is_visible": true,
+      "is_accepted": false,
+      "post_type": "question",
+      "vote_count": 4,
+      "tags": [3, 4],
+      "answers": [
+        {
+          "id": 4,
+          "title": "",
+          "body": "Вот пример адаптивной сетки с использованием CSS Grid:\n\n`css\n.gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));\n  grid-gap: 1rem;\n}\n\n.gallery-item {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n`\n\nВ этом примере:\n- epeat(auto-fill, minmax(250px, 1fr)) автоматически создает столько колонок, сколько поместится в контейнер, где каждая колонка имеет минимальную ширину 250px и может расширяться равномерно\n- grid-gap: 1rem задает отступы между элементами\n\nЭто очень простой и мощный способ создания адаптивной сетки без медиа-запросов.",
+          "author_id": 1,
+          "created_at": "2023-06-02T16:45:00Z",
+          "updated_at": "2023-06-02T16:45:00Z",
+          "views": 0,
+          "is_closed": false,
+          "is_visible": true,
+          "is_accepted": true,
+          "post_type": "answer",
+          "vote_count": 6,
+          "parent_id": 3
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Как обрабатывать ошибки при работе с Fetch API?",
+      "body": "Я использую Fetch API для получения данных с сервера, но не уверен в лучшем способе обработки ошибок. Что считается хорошей практикой для обработки разных типов ошибок с Fetch API в современном JavaScript?",
+      "author_id": 3,
+      "created_at": "2023-06-03T09:10:00Z",
+      "updated_at": "2023-06-03T09:10:00Z",
+      "views": 28,
+      "is_closed": false,
+      "is_visible": true,
+      "is_accepted": false,
+      "post_type": "question",
+      "vote_count": 3,
+      "tags": [1, 5],
+      "answers": [
+        {
+          "id": 6,
+          "title": "",
+          "body": "При работе с Fetch API важно помнить, что promise отклоняется только при ошибке сети, а не при HTTP-ошибках (вроде 404 или 500). Вот пример обработки всех типов ошибок:\n\n`js\nasync function fetchData(url) {\n  try {\n    const response = await fetch(url);\n    \n    // Проверяем HTTP-статус\n    if (!response.ok) {\n      throw new Error(HTTP error! Status: );\n    }\n    \n    // Парсим JSON\n    const data = await response.json();\n    return data;\n  } catch (error) {\n    if (error instanceof SyntaxError) {\n      console.error('Invalid JSON:', error);\n    } else if (error instanceof TypeError) {\n      console.error('Network error:', error);\n    } else {\n      console.error('Other error:', error);\n    }\n    // Перебрасываем ошибку дальше или возвращаем запасной вариант\n    throw error; // или return fallbackData;\n  }\n}\n`\n\nЭтот подход позволяет обрабатывать:\n1. Ошибки сети (TypeError)\n2. HTTP-ошибки (проверка response.ok)\n3. Ошибки парсинга JSON (SyntaxError)\n\nТакже стоит рассмотреть добавление таймаута для fetch, если это критично для вашего приложения.",
+          "author_id": 2,
+          "created_at": "2023-06-03T10:25:00Z",
+          "updated_at": "2023-06-03T10:25:00Z",
+          "views": 0,
+          "is_closed": false,
+          "is_visible": true,
+          "is_accepted": false,
+          "post_type": "answer",
+          "vote_count": 5,
+          "parent_id": 5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Как создать компонент с бесконечной прокруткой во Vue.js?",
+      "body": "Я разрабатываю приложение Vue, где мне нужно отображать длинный список элементов с подгрузкой при прокрутке. Как лучше реализовать бесконечную прокрутку во Vue? Есть ли готовые решения или лучше написать свою реализацию?",
+      "author_id": 1,
+      "created_at": "2023-06-04T14:20:00Z",
+      "updated_at": "2023-06-04T14:20:00Z",
+      "views": 19,
+      "is_closed": false,
+      "is_visible": true,
+      "is_accepted": false,
+      "post_type": "question",
+      "vote_count": 2,
+      "tags": [1, 2],
+      "answers": []
+    },
+    {
+      "id": 8,
+      "title": "Лучшие практики для обеспечения безопасности Vue-приложения",
+      "body": "Я работаю над приложением Vue.js, которое обрабатывает чувствительные данные пользователя. Какие лучшие практики существуют для обеспечения безопасности во Vue-приложениях? Интересуют как фронтенд аспекты, так и взаимодействие с бэкендом.",
+      "author_id": 2,
+      "created_at": "2023-06-05T11:05:00Z",
+      "updated_at": "2023-06-05T11:05:00Z",
+      "views": 22,
+      "is_closed": false,
+      "is_visible": true,
+      "is_accepted": false,
+      "post_type": "question",
+      "vote_count": 4,
+      "tags": [1, 2, 5],
+      "answers": []
+    }
+  ]
+}

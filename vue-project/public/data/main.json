@@ -109,7 +109,7 @@
         {
           "id": 4,
           "title": "",
-          "body": "Вот пример адаптивной сетки с использованием CSS Grid:\n\n`css\n.gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));\n  grid-gap: 1rem;\n}\n\n.gallery-item {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n`\n\nВ этом примере:\n- epeat(auto-fill, minmax(250px, 1fr)) автоматически создает столько колонок, сколько поместится в контейнер, где каждая колонка имеет минимальную ширину 250px и может расширяться равномерно\n- grid-gap: 1rem задает отступы между элементами\n\nЭто очень простой и мощный способ создания адаптивной сетки без медиа-запросов.",
+          "body": "Вот пример адаптивной сетки с использованием CSS Grid",
           "author_id": 1,
           "created_at": "2023-06-02T16:45:00Z",
           "updated_at": "2023-06-02T16:45:00Z",

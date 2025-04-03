@@ -19,7 +19,7 @@
       </v-btn>
       
       <v-btn 
-        href="https://github.com/yourusername/vuejs-questudio" 
+        href="https://github.com/sxd0/vuejs-questudio" 
         target="_blank"
         variant="text"
         class="mx-1"
@@ -141,7 +141,7 @@
              {{ new Date().getFullYear() }}  <strong class="gradient-text">QuestUdio</strong>  Платформа вопросов и ответов для разработчиков
           </div>
           <div class="mt-1 text-caption text-medium-emphasis">
-            Разработано с <v-icon icon="mdi-heart" size="small" color="error"></v-icon> на Vue.js
+            Разработано Жетписовым Ансатом из 231-323 на Vue.js
           </div>
         </v-col>
       </v-row>

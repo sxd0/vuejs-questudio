@@ -14,13 +14,18 @@ const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: 'dark',
     themes: {
-      light: {
+      dark: {
         colors: {
-          primary: '#1867C0',
-          secondary: '#5CBBF6',
-          accent: '#e91e63',
+          primary: '#2563EB',   // синий
+          secondary: '#334155', // темно-серый
+          accent: '#10B981',    // зеленый
+          surface: '#1E293B',   // темно-синий фон
+          background: '#0F172A', // очень темный фон
+          error: '#EF4444',     // красный
+          success: '#10B981',   // зеленый
+          warning: '#F59E0B',   // оранжевый
         },
       },
     },

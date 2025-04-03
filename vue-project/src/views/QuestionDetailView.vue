@@ -66,14 +66,19 @@
           <div class="d-flex justify-space-between align-center">
             <div class="d-flex align-center">
               <v-btn-group variant="outlined" density="comfortable">
-                <v-btn @click="toggleVote(question.id, 'up')" prepend-icon="mdi-thumb-up">
+                <v-btn @click="handleVote(question.id, 'up', true)" prepend-icon="mdi-thumb-up">
                   {{ question.vote_count > 0 ? '+' + question.vote_count : question.vote_count }}
                 </v-btn>
-                <v-btn @click="toggleVote(question.id, 'down')" prepend-icon="mdi-thumb-down"></v-btn>
+                <v-btn @click="handleVote(question.id, 'down', true)" prepend-icon="mdi-thumb-down"></v-btn>
               </v-btn-group>
               
-              <v-btn variant="text" class="ml-2" prepend-icon="mdi-bookmark-outline">
-                Сохранить
+              <v-btn 
+                variant="text" 
+                class="ml-2" 
+                :prepend-icon="isBookmarked(questionId) ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                @click="handleToggleBookmark(questionId)"
+              >
+                {{ isBookmarked(questionId) ? 'Сохранено' : 'Сохранить' }}
               </v-btn>
             </div>
             
@@ -148,15 +153,47 @@
         </v-card-item>
       </v-card>
       
+      <!-- Статистика -->
+      <v-row class="mb-6">
+        <v-col cols="12" sm="4">
+          <v-card variant="tonal" class="text-center">
+            <v-card-text>
+              <div class="text-h5">{{ answersCount }}</div>
+              <div>Ответов</div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        
+        <v-col cols="12" sm="4">
+          <v-card variant="tonal" class="text-center">
+            <v-card-text>
+              <div class="text-h5">{{ acceptedAnswer ? 'Да' : 'Нет' }}</div>
+              <div>Принятый ответ</div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        
+        <v-col cols="12" sm="4">
+          <v-card variant="tonal" class="text-center">
+            <v-card-text>
+              <div class="text-h5">
+                {{ Math.floor((new Date() - new Date(question.created_at)) / (1000 * 60 * 60 * 24)) }}
+              </div>
+              <div>Дней активен</div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      
       <!-- Ответы -->
       <h2 class="text-h5 mb-4 d-flex align-center">
         <v-icon icon="mdi-message-reply" class="mr-2"></v-icon>
-        {{ question.answers?.length || 0 }} Ответов
+        {{ answersCount }} Ответов
       </h2>
       
-      <div v-if="question.answers && question.answers.length > 0">
+      <div v-if="answers && answers.length > 0">
         <v-card 
-          v-for="answer in question.answers" 
+          v-for="answer in answers" 
           :key="answer.id" 
           class="mb-4"
           variant="outlined"
@@ -173,19 +210,19 @@
             <div class="d-flex justify-space-between align-center">
               <div class="d-flex align-center">
                 <v-btn-group variant="outlined" density="comfortable">
-                  <v-btn @click="toggleVote(answer.id, 'up')" prepend-icon="mdi-thumb-up">
+                  <v-btn @click="handleVote(answer.id, 'up', false)" prepend-icon="mdi-thumb-up">
                     {{ answer.vote_count > 0 ? '+' + answer.vote_count : answer.vote_count }}
                   </v-btn>
-                  <v-btn @click="toggleVote(answer.id, 'down')" prepend-icon="mdi-thumb-down"></v-btn>
+                  <v-btn @click="handleVote(answer.id, 'down', false)" prepend-icon="mdi-thumb-down"></v-btn>
                 </v-btn-group>
                 
                 <v-btn 
-                  v-if="question.author_id === 1 && !answer.is_accepted"
+                  v-if="question.author_id === currentUser.id && !answer.is_accepted"
                   variant="text" 
                   color="success" 
                   class="ml-2" 
                   prepend-icon="mdi-check-circle-outline"
-                  @click="acceptAnswer(answer.id)"
+                  @click="handleAcceptAnswer(answer.id)"
                 >
                   Принять
                 </v-btn>
@@ -259,8 +296,9 @@
           <v-spacer></v-spacer>
           <v-btn 
             color="primary" 
-            @click="submitAnswer"
+            @click="handleSubmitAnswer"
             :disabled="newAnswer.length < 30"
+            :loading="submittingAnswer"
             size="large"
           >
             Опубликовать ответ
@@ -289,19 +327,32 @@ export default {
     return {
       newAnswer: '',
       newComment: '',
-      showComments: false
+      showComments: false,
+      submittingAnswer: false
     };
   },
   computed: {
-    ...mapState(['questions', 'users', 'loading', 'error']),
-    ...mapGetters(['getQuestionById', 'getUserById', 'getTagById']),
+    ...mapState(['questions', 'users', 'loading', 'error', 'currentUser']),
+    ...mapGetters(['getQuestionById', 'getUserById', 'getTagById', 'isBookmarked']),
     
     questionId() {
-      return parseInt(this.\.params.id);
+      return parseInt(this.$route.params.id);
     },
     
     question() {
       return this.getQuestionById(this.questionId);
+    },
+    
+    answers() {
+      return this.question?.answers || [];
+    },
+    
+    answersCount() {
+      return this.answers.length;
+    },
+    
+    acceptedAnswer() {
+      return this.answers.find(a => a.is_accepted);
     },
     
     breadcrumbs() {
@@ -325,14 +376,20 @@ export default {
   },
   created() {
     this.fetchData().then(() => {
-      // Увеличиваем счетчик просмотров
       if (this.question) {
-        this.question.views++;
+        this.viewQuestion(this.questionId);
       }
     });
   },
   methods: {
-    ...mapActions(['fetchData']),
+    ...mapActions([
+      'fetchData', 
+      'vote', 
+      'acceptAnswer', 
+      'createAnswer',
+      'viewQuestion',
+      'toggleBookmark'
+    ]),
     
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -349,65 +406,41 @@ export default {
       return text.slice(0, maxLength) + '...';
     },
     
-    toggleVote(postId, type) {
-      // Находим пост (вопрос или ответ)
-      let post = this.questions.find(q => q.id === postId);
-      if (!post) {
-        post = this.question.answers.find(a => a.id === postId);
-      }
-      
-      if (!post) return;
-      
-      if (type === 'up') {
-        post.vote_count++;
-      } else if (type === 'down') {
-        post.vote_count--;
-      }
+    async handleVote(id, type, isQuestion) {
+      await this.vote({ id, type, isQuestion });
     },
     
-    acceptAnswer(answerId) {
-      // Находим ответ и помечаем его как принятый
-      const answer = this.question.answers.find(a => a.id === answerId);
-      if (answer) {
-        // Сначала снимаем пометку со всех ответов
-        this.question.answers.forEach(a => {
-          a.is_accepted = false;
-        });
-        
-        // Затем помечаем выбранный ответ
-        answer.is_accepted = true;
-      }
+    async handleAcceptAnswer(answerId) {
+      await this.acceptAnswer({ 
+        questionId: this.questionId, 
+        answerId 
+      });
     },
     
-    submitAnswer() {
+    async handleSubmitAnswer() {
       if (this.newAnswer.trim().length < 30) {
         return;
       }
       
-      // Создаем новый ответ
-      const newAnswerObj = {
-        id: Math.max(...this.questions.flatMap(q => q.answers?.map(a => a.id) || [0])) + 1,
+      this.submittingAnswer = true;
+      
+      const answerData = {
         title: '',
-        body: this.newAnswer,
-        author_id: 1, // Текущий пользователь
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        views: 0,
-        is_closed: false,
-        is_visible: true,
-        is_accepted: false,
-        post_type: 'answer',
-        vote_count: 0,
-        parent_id: this.questionId
+        body: this.newAnswer.trim()
       };
       
-      // Добавляем ответ в массив ответов вопроса
-      if (!this.question.answers) {
-        this.question.answers = [];
+      try {
+        await this.createAnswer({ 
+          questionId: this.questionId, 
+          answerData 
+        });
+        
+        this.newAnswer = '';
+      } catch (error) {
+        console.error('Error submitting answer:', error);
+      } finally {
+        this.submittingAnswer = false;
       }
-      
-      this.question.answers.push(newAnswerObj);
-      this.newAnswer = '';
     },
     
     submitComment() {
@@ -417,9 +450,13 @@ export default {
       this.newComment = '';
       
       // Эмуляция добавления комментария
-      this.(() => {
+      this.$nextTick(() => {
         this.showComments = true;
       });
+    },
+    
+    async handleToggleBookmark(questionId) {
+      await this.toggleBookmark(questionId);
     }
   }
 };

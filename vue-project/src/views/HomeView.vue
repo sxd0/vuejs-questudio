@@ -8,16 +8,17 @@
           <v-card-text>
             <v-row>
               <v-col cols="12" md="7">
-                <v-text-field
+                <v-autocomplete
                   v-model="searchQuery"
+                  :items="searchHistory"
                   label="Поиск по вопросам"
                   prepend-inner-icon="mdi-magnify"
                   clearable
-                  @input="filterQuestions"
+                  @update:model-value="handleSearch"
                   hide-details
                   variant="outlined"
                   density="comfortable"
-                ></v-text-field>
+                ></v-autocomplete>
               </v-col>
               
               <v-col cols="12" md="5">
@@ -64,6 +65,36 @@
         </div>
         
         <div v-else>
+          <!-- Статистика -->
+          <v-row class="mb-6">
+            <v-col cols="12" sm="4">
+              <v-card variant="tonal" class="text-center">
+                <v-card-text>
+                  <div class="text-h5">{{ getTotalQuestions }}</div>
+                  <div>Всего вопросов</div>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            
+            <v-col cols="12" sm="4">
+              <v-card variant="tonal" class="text-center">
+                <v-card-text>
+                  <div class="text-h5">{{ getTotalAnswers }}</div>
+                  <div>Всего ответов</div>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            
+            <v-col cols="12" sm="4">
+              <v-card variant="tonal" class="text-center">
+                <v-card-text>
+                  <div class="text-h5">{{ getAnsweredPercentage }}%</div>
+                  <div>Вопросов с ответами</div>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        
           <div v-if="filteredQuestions.length === 0" class="text-center my-8">
             <v-icon icon="mdi-help-circle-outline" size="large" class="mb-4"></v-icon>
             <p class="text-body-1">Вопросы не найдены. Попробуйте изменить параметры поиска.</p>
@@ -85,12 +116,36 @@
             :ripple="true"
           >
             <v-card-item>
-              <router-link 
-                :to="'/question/' + question.id" 
-                class="question-title text-h6 d-block mb-2 text-decoration-none"
-              >
-                {{ question.title }}
-              </router-link>
+              <div class="d-flex align-center">
+                <router-link 
+                  :to="'/question/' + question.id" 
+                  class="question-title text-h6 d-block mb-2 text-decoration-none flex-grow-1"
+                >
+                  {{ question.title }}
+                </router-link>
+                
+                <v-btn
+                  v-if="isBookmarked(question.id)"
+                  icon
+                  size="small"
+                  color="warning"
+                  class="ml-2"
+                  @click.stop="handleToggleBookmark(question.id)"
+                >
+                  <v-icon>mdi-bookmark</v-icon>
+                </v-btn>
+                
+                <v-btn
+                  v-else
+                  icon
+                  size="small"
+                  variant="text"
+                  class="ml-2"
+                  @click.stop="handleToggleBookmark(question.id)"
+                >
+                  <v-icon>mdi-bookmark-outline</v-icon>
+                </v-btn>
+              </div>
               
               <div class="text-body-2 text-medium-emphasis mb-2">
                 {{ truncateText(question.body, 150) }}
@@ -114,7 +169,7 @@
             <v-divider></v-divider>
             
             <v-card-actions>
-              <v-btn variant="text" size="small" @click="toggleVote(question.id, 'up')" class="pa-2">
+              <v-btn variant="text" size="small" @click.stop="handleVote(question.id, 'up', true)" class="pa-2">
                 <v-icon>mdi-thumb-up-outline</v-icon>
                 <span class="ml-1">{{ question.vote_count }}</span>
               </v-btn>
@@ -130,6 +185,16 @@
               </v-btn>
               
               <v-spacer></v-spacer>
+              
+              <v-chip
+                v-if="hasAcceptedAnswer(question)"
+                size="small"
+                color="success"
+                class="mr-2"
+              >
+                <v-icon start size="small">mdi-check-circle</v-icon>
+                Решено
+              </v-chip>
               
               <v-chip size="small" variant="text" class="text-caption">
                 <v-avatar start>
@@ -167,7 +232,7 @@
           
           <v-card-text>
             <v-chip
-              v-for="tag in tags"
+              v-for="tag in getPopularTags(10)"
               :key="tag.id"
               class="mr-2 mb-2"
               :color="selectedTag === tag.id ? 'primary' : 'default'"
@@ -175,7 +240,7 @@
               @click="selectTag(tag)"
             >
               {{ tag.name }}
-              <span class="ml-1 text-caption">{{ getQuestionCountByTag(tag.id) }}</span>
+              <span class="ml-1 text-caption">{{ tag.count }}</span>
             </v-chip>
           </v-card-text>
         </v-card>
@@ -188,7 +253,7 @@
           
           <v-list>
             <v-list-item
-              v-for="user in topUsers"
+              v-for="user in getTopUsers(5)"
               :key="user.id"
               :title="user.username"
               :subtitle="'Репутация: ' + user.reputation"
@@ -200,6 +265,38 @@
                     alt="User Avatar"
                   ></v-img>
                 </v-avatar>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card>
+        
+        <v-card v-if="bookmarks.length > 0" class="mb-6">
+          <v-card-title>
+            <v-icon icon="mdi-bookmark-multiple" class="mr-2"></v-icon>
+            Ваши закладки
+          </v-card-title>
+          
+          <v-list>
+            <v-list-item
+              v-for="bookmarkId in bookmarks"
+              :key="bookmarkId"
+              :title="getQuestionById(bookmarkId)?.title || 'Вопрос не найден'"
+              :to="'/question/' + bookmarkId"
+              lines="two"
+            >
+              <template v-slot:prepend>
+                <v-icon icon="mdi-help-circle-outline"></v-icon>
+              </template>
+              
+              <template v-slot:append>
+                <v-btn
+                  icon
+                  size="small"
+                  variant="text"
+                  @click.stop="handleToggleBookmark(bookmarkId)"
+                >
+                  <v-icon>mdi-bookmark-remove</v-icon>
+                </v-btn>
               </template>
             </v-list-item>
           </v-list>
@@ -295,7 +392,7 @@
           <v-spacer></v-spacer>
           <v-btn 
             color="primary" 
-            @click="submitQuestion"
+            @click="handleSubmitQuestion"
             :disabled="!isQuestionFormValid"
             :loading="submittingQuestion"
           >
@@ -336,20 +433,35 @@ export default {
     };
   },
   computed: {
-    ...mapState(['questions', 'users', 'tags', 'loading', 'error']),
-    ...mapGetters(['getUserById', 'getTagById', 'getQuestionsByTag']),
+    ...mapState([
+      'questions', 
+      'users', 
+      'tags', 
+      'loading', 
+      'error',
+      'searchHistory',
+      'bookmarks',
+      'currentUser'
+    ]),
+    ...mapGetters([
+      'getUserById', 
+      'getTagById', 
+      'getQuestionsByTag',
+      'getPopularTags',
+      'getTopUsers',
+      'getTotalQuestions',
+      'getTotalAnswers',
+      'getAnsweredPercentage',
+      'getQuestionsWithAcceptedAnswers',
+      'isBookmarked',
+      'getQuestionById'
+    ]),
     
     tagItems() {
       return this.tags.map(tag => ({
         title: tag.name,
         value: tag.id
       }));
-    },
-    
-    topUsers() {
-      return [...this.users]
-        .sort((a, b) => b.reputation - a.reputation)
-        .slice(0, 5);
     },
     
     isQuestionFormValid() {
@@ -366,7 +478,13 @@ export default {
     });
   },
   methods: {
-    ...mapActions(['fetchData']),
+    ...mapActions([
+      'fetchData', 
+      'searchQuestions', 
+      'vote',
+      'toggleBookmark',
+      'createQuestion'
+    ]),
     
     filterQuestions() {
       let result = [...this.questions];
@@ -444,15 +562,25 @@ export default {
       return `${Math.floor(diffMonths / 12)} г назад`;
     },
     
-    toggleVote(questionId, type) {
-      const question = this.questions.find(q => q.id === questionId);
-      if (!question) return;
-      
-      if (type === 'up') {
-        question.vote_count++;
-      } else if (type === 'down') {
-        question.vote_count--;
+    async handleSearch(query) {
+      if (query) {
+        const questions = await this.searchQuestions(query);
+        this.filteredQuestions = questions;
+      } else {
+        this.filterQuestions();
       }
+    },
+    
+    async handleVote(id, type, isQuestion) {
+      await this.vote({ id, type, isQuestion });
+    },
+    
+    async handleToggleBookmark(questionId) {
+      await this.toggleBookmark(questionId);
+    },
+    
+    hasAcceptedAnswer(question) {
+      return question.answers?.some(a => a.is_accepted);
     },
     
     selectTag(tag) {
@@ -461,52 +589,36 @@ export default {
       this.filterQuestions();
     },
     
-    getQuestionCountByTag(tagId) {
-      return this.questions.filter(question => 
-        question.tags && question.tags.includes(tagId)
-      ).length;
-    },
-    
-    async submitQuestion() {
+    async handleSubmitQuestion() {
       if (!this.isQuestionFormValid) return;
       
       this.submittingQuestion = true;
       
-      // Имитация задержки сети
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      // Создаем новый вопрос
-      const newQuestionObj = {
-        id: Math.max(...this.questions.map(q => q.id)) + 1,
+      const questionData = {
         title: this.newQuestion.title,
         body: this.newQuestion.body,
         tags: this.newQuestion.tags.map(tag => 
           typeof tag === 'object' ? tag.value : tag
-        ),
-        author_id: 1, // Текущий пользователь
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        views: 0,
-        is_closed: false,
-        is_visible: true,
-        is_accepted: false,
-        post_type: 'question',
-        vote_count: 0,
-        answers: []
+        )
       };
       
-      this.questions.unshift(newQuestionObj);
-      this.filterQuestions();
-      
-      // Сбрасываем форму
-      this.newQuestion = {
-        title: '',
-        body: '',
-        tags: []
-      };
-      
-      this.submittingQuestion = false;
-      this.showQuestionDialog = false;
+      try {
+        await this.createQuestion(questionData);
+        
+        // Сбрасываем форму
+        this.newQuestion = {
+          title: '',
+          body: '',
+          tags: []
+        };
+        
+        this.showQuestionDialog = false;
+        this.filterQuestions();
+      } catch (error) {
+        console.error('Error creating question:', error);
+      } finally {
+        this.submittingQuestion = false;
+      }
     }
   }
 };

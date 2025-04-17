@@ -1,214 +1,296 @@
-﻿{
+{
   "users": [
     {
       "id": 1,
       "username": "johndoe",
       "email": "john@example.com",
-      "password_hash": "hashed_password",
-      "created_at": "2024-02-15T10:00:00Z",
-      "updated_at": "2024-02-15T10:00:00Z",
+      "password": "hashed_password",
+      "created_at": "2023-01-15T10:30:00Z",
+      "updated_at": "2023-01-15T10:30:00Z",
       "is_admin": false,
-      "is_active": true
+      "avatar": "/images/avatars/user1.jpg"
     },
     {
       "id": 2,
       "username": "janedoe",
       "email": "jane@example.com",
-      "password_hash": "hashed_password",
-      "created_at": "2024-02-16T11:30:00Z",
-      "updated_at": "2024-02-16T11:30:00Z",
+      "password": "hashed_password",
+      "created_at": "2023-01-20T14:45:00Z",
+      "updated_at": "2023-01-20T14:45:00Z",
       "is_admin": false,
-      "is_active": true
+      "avatar": "/images/avatars/user2.jpg"
     },
     {
       "id": 3,
       "username": "admin",
       "email": "admin@example.com",
-      "password_hash": "hashed_password",
-      "created_at": "2024-02-14T09:15:00Z",
-      "updated_at": "2024-02-14T09:15:00Z",
+      "password": "hashed_password",
+      "created_at": "2023-01-01T08:00:00Z",
+      "updated_at": "2023-01-01T08:00:00Z",
       "is_admin": true,
-      "is_active": true
+      "avatar": "/images/avatars/admin.jpg"
     }
   ],
   "posts": [
     {
       "id": 1,
       "user_id": 1,
-      "title": "Как работают замыкания в JavaScript?",
-      "body": "Я только начинаю изучать JavaScript и не могу до конца понять концепцию замыканий. Можете объяснить простыми словами, что такое замыкание и привести практический пример?",
-      "created_at": "2024-03-01T14:25:00Z",
-      "updated_at": "2024-03-01T14:25:00Z",
-      "parent_id": null,
-      "post_type": "question",
+      "title": "Как работает хук ref в Vue 3?",
+      "body": "Я начал изучать Vue 3 и Composition API. Не могу разобраться, как правильно использовать хук ref и в чем его отличие от reactive?",
+      "created_at": "2023-02-10T09:15:00Z",
+      "updated_at": "2023-02-10T09:15:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 5
+      "views_count": 145,
+      "vote_count": 25,
+      "post_type": "question",
+      "parent_id": null
     },
     {
       "id": 2,
       "user_id": 2,
       "title": null,
-      "body": "Замыкание в JavaScript  это функция, которая запоминает свою внешнюю среду (переменные) в момент создания. Простыми словами, функция \"запоминает\" все переменные, которые были доступны ей в момент определения, даже если она вызывается в совершенно другом месте. Пример:\n\n```javascript\nfunction createCounter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  };\n}\n\nconst counter = createCounter();\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\nconsole.log(counter()); // 3\n```\n\nВ этом примере внутренняя функция имеет доступ к переменной `count`, даже после того, как функция `createCounter` завершила выполнение.",
-      "created_at": "2024-03-01T15:10:00Z",
-      "updated_at": "2024-03-01T15:10:00Z",
-      "parent_id": 1,
-      "post_type": "answer",
+      "body": "Хук ref используется для создания реактивной ссылки на значение любого типа. Основное отличие от reactive заключается в том, что ref работает с примитивными типами данных, а для доступа к значению нужно использовать свойство .value. Пример использования:\n\n```js\nconst count = ref(0)\nconsole.log(count.value) // 0\ncount.value++\nconsole.log(count.value) // 1\n```\n\nВ шаблонах Vue автоматически разворачивает .value, поэтому там можно писать просто {{ count }}.",
+      "created_at": "2023-02-10T10:30:00Z",
+      "updated_at": "2023-02-10T10:30:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 7
+      "views_count": 0,
+      "vote_count": 18,
+      "post_type": "answer",
+      "parent_id": 1
     },
     {
       "id": 3,
       "user_id": 1,
-      "title": null,
-      "body": "Спасибо за понятное объяснение! Теперь гораздо яснее.",
-      "created_at": "2024-03-01T16:05:00Z",
-      "updated_at": "2024-03-01T16:05:00Z",
-      "parent_id": 2,
-      "post_type": "comment",
+      "title": "Какие есть способы управления состоянием во Vue?",
+      "body": "Разрабатываю достаточно крупное приложение на Vue. Какие есть рекомендуемые подходы для управления состоянием? Стоит ли использовать Vuex или есть более современные решения?",
+      "created_at": "2023-02-15T14:20:00Z",
+      "updated_at": "2023-02-15T14:20:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 1
+      "views_count": 210,
+      "vote_count": 32,
+      "post_type": "question",
+      "parent_id": null
     },
     {
       "id": 4,
       "user_id": 3,
-      "title": "Как использовать Vuex в Vue 3?",
-      "body": "Я переходил с Vue 2 на Vue 3 и столкнулся с проблемами при использовании Vuex. Какие есть особенности работы Vuex в Vue 3 и как правильно его настроить? Буду благодарен за примеры кода.",
-      "created_at": "2024-03-02T10:15:00Z",
-      "updated_at": "2024-03-02T10:15:00Z",
-      "parent_id": null,
-      "post_type": "question",
+      "title": null,
+      "body": "Для управления состоянием во Vue есть несколько подходов:\n\n1. **Props и события** - для простых приложений\n2. **Provide/Inject** - для передачи данных глубоко в дерево компонентов\n3. **Vuex** - классическое решение для Vue 2\n4. **Pinia** - современная альтернатива Vuex для Vue 3\n\nДля крупных приложений на Vue 3 рекомендую обратить внимание на Pinia, так как она имеет лучшую поддержку TypeScript, меньше бойлерплейта и нативно работает с Composition API.",
+      "created_at": "2023-02-15T15:45:00Z",
+      "updated_at": "2023-02-15T15:45:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 3
+      "views_count": 0,
+      "vote_count": 41,
+      "post_type": "answer",
+      "parent_id": 3
     },
     {
       "id": 5,
       "user_id": 2,
-      "title": null,
-      "body": "В Vue 3 можно использовать Vuex 4, который адаптирован для работы с Composition API. Основные изменения связаны с установкой и созданием хранилища. Вот пример:\n\n```javascript\n// store/index.js\nimport { createStore } from \"vuex\";\n\nexport default createStore({\n  state: {\n    count: 0\n  },\n  mutations: {\n    increment(state) {\n      state.count++;\n    }\n  },\n  actions: {\n    incrementAsync({ commit }) {\n      setTimeout(() => {\n        commit(\"increment\");\n      }, 1000);\n    }\n  },\n  getters: {\n    doubleCount: (state) => state.count * 2\n  }\n});\n```\n\nА в main.js:\n\n```javascript\nimport { createApp } from \"vue\";\nimport App from \"./App.vue\";\nimport store from \"./store\";\n\ncreateApp(App).use(store).mount(\"#app\");\n```\n\nВ компонентах с Composition API используйте useStore:\n\n```javascript\nimport { computed } from \"vue\";\nimport { useStore } from \"vuex\";\n\nexport default {\n  setup() {\n    const store = useStore();\n    \n    return {\n      count: computed(() => store.state.count),\n      doubleCount: computed(() => store.getters.doubleCount),\n      increment: () => store.commit(\"increment\"),\n      incrementAsync: () => store.dispatch(\"incrementAsync\")\n    };\n  }\n};\n```\n\nТакже рекомендую рассмотреть Pinia как альтернативу Vuex для Vue 3, она проще в использовании и лучше интегрирована с TypeScript.",
-      "created_at": "2024-03-02T11:30:00Z",
-      "updated_at": "2024-03-02T11:30:00Z",
-      "parent_id": 4,
-      "post_type": "answer",
+      "title": "Как организовать адаптивную верстку во Vue?",
+      "body": "Какие есть лучшие практики для создания адаптивного дизайна в приложении Vue? Стоит ли использовать CSS-фреймворк или писать собственные стили?",
+      "created_at": "2023-02-20T11:10:00Z",
+      "updated_at": "2023-02-20T11:10:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 5
+      "views_count": 178,
+      "vote_count": 29,
+      "post_type": "question",
+      "parent_id": null
     },
     {
       "id": 6,
       "user_id": 1,
-      "title": "Как создать адаптивную верстку с CSS Grid?",
-      "body": "Хочу использовать CSS Grid для создания адаптивного макета сайта. Какие есть лучшие практики и примеры использования Grid для адаптивной верстки? Интересует особенно как сделать разное количество колонок на разных устройствах.",
-      "created_at": "2024-03-03T09:45:00Z",
-      "updated_at": "2024-03-03T09:45:00Z",
-      "parent_id": null,
-      "post_type": "question",
+      "title": null,
+      "body": "Для адаптивной верстки во Vue я рекомендую следующие подходы:\n\n1. Использовать CSS Grid и Flexbox для создания гибких макетов\n2. Применять медиа-запросы (@media) для различных размеров экранов\n3. Рассмотреть использование CSS-переменных для единообразия\n\nЧто касается фреймворков, то популярные варианты:\n- Tailwind CSS - утилитарный подход\n- Vuetify - материальный дизайн\n- Bootstrap Vue - на основе Bootstrap\n\nВыбор зависит от требований проекта и ваших предпочтений.",
+      "created_at": "2023-02-20T13:25:00Z",
+      "updated_at": "2023-02-20T13:25:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 4
+      "views_count": 0,
+      "vote_count": 15,
+      "post_type": "answer",
+      "parent_id": 5
     },
     {
       "id": 7,
-      "user_id": 3,
+      "user_id": 2,
       "title": null,
-      "body": "Для создания адаптивной верстки с CSS Grid, можно использовать функцию repeat() вместе с minmax() и auto-fit или auto-fill. Вот пример:\n\n```css\n.grid-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n  gap: 20px;\n}\n```\n\nЭтот код создаст столько колонок, сколько поместится, при этом минимальная ширина колонки будет 250px, а максимальная - занимать доступное пространство. \n\nРазличия между auto-fit и auto-fill:\n- auto-fit: растягивает элементы, чтобы заполнить всю строку, когда элементов недостаточно\n- auto-fill: оставляет пустые колонки, если элементов недостаточно\n\nТакже можно использовать медиа-запросы для еще более точного контроля:\n\n```css\n.grid-container {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 20px;\n}\n\n@media (min-width: 600px) {\n  .grid-container {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (min-width: 900px) {\n  .grid-container {\n    grid-template-columns: repeat(3, 1fr);\n  }\n}\n\n@media (min-width: 1200px) {\n  .grid-container {\n    grid-template-columns: repeat(4, 1fr);\n  }\n}\n```\n\nТакой подход дает более точный контроль над количеством колонок на разных устройствах.",
-      "created_at": "2024-03-03T10:20:00Z",
-      "updated_at": "2024-03-03T10:20:00Z",
-      "parent_id": 6,
-      "post_type": "answer",
+      "body": "Соглашусь с предыдущим ответом и добавлю, что можно также рассмотреть подход с CSS-модулями, которые хорошо работают с Vue. Это позволит вам иметь изолированные стили для каждого компонента и избежать конфликтов имен классов. Vue CLI проекты уже настроены для работы с CSS-модулями.",
+      "created_at": "2023-02-21T09:40:00Z",
+      "updated_at": "2023-02-21T09:40:00Z",
       "is_closed": false,
       "is_visible": true,
-      "vote_count": 6
+      "views_count": 0,
+      "vote_count": 8,
+      "post_type": "answer",
+      "parent_id": 5
+    },
+    {
+      "id": 8,
+      "user_id": 3,
+      "title": null,
+      "body": "Отличный вопрос! Кроме уже упомянутых вариантов, рекомендую обратить внимание на подход Mobile First - сначала стилизовать интерфейс для мобильных устройств, а затем расширять для больших экранов с помощью медиа-запросов. Это обычно приводит к более чистому и эффективному CSS.",
+      "created_at": "2023-02-22T16:15:00Z",
+      "updated_at": "2023-02-22T16:15:00Z",
+      "is_closed": false,
+      "is_visible": true,
+      "views_count": 0,
+      "vote_count": 12,
+      "post_type": "answer",
+      "parent_id": 5
+    },
+    {
+      "id": 9,
+      "user_id": 3,
+      "title": "Как эффективно использовать Composition API?",
+      "body": "Недавно перешел с Options API на Composition API. Какие есть лучшие практики организации кода? Стоит ли выносить логику в composables?",
+      "created_at": "2023-03-05T10:00:00Z",
+      "updated_at": "2023-03-05T10:00:00Z",
+      "is_closed": false,
+      "is_visible": true,
+      "views_count": 256,
+      "vote_count": 45,
+      "post_type": "question",
+      "parent_id": null
+    },
+    {
+      "id": 10,
+      "user_id": 1,
+      "title": null,
+      "body": "Composition API действительно предлагает много преимуществ, вот несколько лучших практик:\n\n1. **Используйте composables** для повторного использования логики между компонентами\n2. **Группируйте связанный код** вместо разделения по опциям\n3. **Именуйте ref и reactive переменные** в соответствии с их назначением, без специальных префиксов\n4. **Деструктурируйте с осторожностью** - помните, что деструктуризация reactive теряет реактивность\n\nПример хорошей организации:\n```js\n// useCounter.js\nexport function useCounter() {\n  const count = ref(0)\n  function increment() {\n    count.value++\n  }\n  return { count, increment }\n}\n\n// Component.vue\nimport { useCounter } from './useCounter'\n\nsetup() {\n  const { count, increment } = useCounter()\n  return { count, increment }\n}\n```",
+      "created_at": "2023-03-05T11:30:00Z",
+      "updated_at": "2023-03-05T11:30:00Z",
+      "is_closed": false,
+      "is_visible": true,
+      "views_count": 0,
+      "vote_count": 38,
+      "post_type": "answer",
+      "parent_id": 9
     }
   ],
   "tags": [
     {
       "id": 1,
-      "name": "javascript",
-      "description": "JavaScript  это мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили."
+      "name": "vue.js",
+      "description": "Прогрессивный JavaScript фреймворк для создания пользовательских интерфейсов"
     },
     {
       "id": 2,
-      "name": "vue.js",
-      "description": "Vue.js  JavaScript-фреймворк с открытым исходным кодом для создания пользовательских интерфейсов."
+      "name": "javascript",
+      "description": "Мультипарадигменный язык программирования"
     },
     {
       "id": 3,
-      "name": "css",
-      "description": "CSS (Cascading Style Sheets)  формальный язык описания внешнего вида документа, написанного с использованием языка разметки."
+      "name": "composition-api",
+      "description": "API во Vue 3, позволяющий организовывать код по логическим блокам"
     },
     {
       "id": 4,
-      "name": "html",
-      "description": "HTML (HyperText Markup Language)  стандартизированный язык разметки документов для просмотра веб-страниц в браузере."
+      "name": "css",
+      "description": "Каскадные таблицы стилей для оформления HTML-документов"
     },
     {
       "id": 5,
-      "name": "vuex",
-      "description": "Vuex  паттерн управления состоянием и библиотека для приложений на Vue.js. Он служит централизованным хранилищем данных для всех компонентов приложения."
+      "name": "адаптивный-дизайн",
+      "description": "Методы создания веб-интерфейсов, корректно работающих на различных устройствах"
+    },
+    {
+      "id": 6,
+      "name": "state-management",
+      "description": "Управление состоянием приложения"
     }
   ],
-  "question_tags": [
+  "postsTags": [
     {
-      "id": 1,
-      "question_id": 1,
+      "post_id": 1,
       "tag_id": 1
     },
     {
-      "id": 2,
-      "question_id": 4,
-      "tag_id": 2
-    },
-    {
-      "id": 3,
-      "question_id": 4,
-      "tag_id": 5
-    },
-    {
-      "id": 4,
-      "question_id": 6,
+      "post_id": 1,
       "tag_id": 3
     },
     {
-      "id": 5,
-      "question_id": 6,
+      "post_id": 3,
+      "tag_id": 1
+    },
+    {
+      "post_id": 3,
+      "tag_id": 6
+    },
+    {
+      "post_id": 5,
+      "tag_id": 1
+    },
+    {
+      "post_id": 5,
       "tag_id": 4
+    },
+    {
+      "post_id": 5,
+      "tag_id": 5
+    },
+    {
+      "post_id": 9,
+      "tag_id": 1
+    },
+    {
+      "post_id": 9,
+      "tag_id": 2
+    },
+    {
+      "post_id": 9,
+      "tag_id": 3
     }
   ],
   "votes": [
     {
       "id": 1,
+      "user_id": 1,
+      "post_id": 3,
+      "vote_type": 1
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "post_id": 4,
+      "vote_type": 1
+    },
+    {
+      "id": 3,
       "user_id": 2,
       "post_id": 1,
       "vote_type": 1
     },
     {
-      "id": 2,
+      "id": 4,
+      "user_id": 2,
+      "post_id": 10,
+      "vote_type": 1
+    },
+    {
+      "id": 5,
       "user_id": 3,
       "post_id": 1,
       "vote_type": 1
     },
     {
-      "id": 3,
-      "user_id": 1,
-      "post_id": 2,
-      "vote_type": 1
-    },
-    {
-      "id": 4,
+      "id": 6,
       "user_id": 3,
       "post_id": 2,
       "vote_type": 1
     }
   ],
-  "current_user": {
-    "id": 2,
-    "username": "janedoe",
-    "email": "jane@example.com",
-    "is_admin": false,
-    "is_active": true
+  "currentUser": {
+    "id": 1,
+    "username": "johndoe",
+    "email": "john@example.com",
+    "avatar": "/images/avatars/user1.jpg",
+    "isLoggedIn": true,
+    "isAdmin": false
   }
 }

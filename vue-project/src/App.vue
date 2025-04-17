@@ -1,62 +1,44 @@
 ﻿<template>
-  <div class="app">
-    <SkipLink />
-    <TheHeader />
-    <main id="main-content" class="main-content">
-      <RouterView />
+  <div class="app-wrapper">
+    <app-header />
+    <main class="main-content">
+      <div class="container">
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
     </main>
-    <TheFooter />
-    <ToastsManager />
+    <app-footer />
   </div>
 </template>
 
 <script setup>
-import { RouterView } from "vue-router";
-import TheHeader from "./components/layout/TheHeader.vue";
-import TheFooter from "./components/layout/TheFooter.vue";
-import SkipLink from "./components/ui/SkipLink.vue";
-import ToastsManager from "./components/layout/ToastsManager.vue";
+import { onMounted } from 'vue';
+import AppHeader from '@/components/layout/AppHeader.vue';
+import AppFooter from '@/components/layout/AppFooter.vue';
+
+onMounted(() => {
+  document.title = 'QA Platform - Вопросы и ответы по программированию';
+});
 </script>
 
 <style>
-/* Сброс стилей */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .main-content {
-  min-height: calc(100vh - 400px); /* Минимальная высота для основного контента */
+  flex: 1;
+  padding: 2rem 0;
 }
 
-/* Фокус для клавиатурной навигации */
-:focus-visible {
-  outline: 3px solid #0077cc;
-  outline-offset: 2px;
-}
-
-/* Адаптивные стили */
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
+  .main-content {
+    padding: 1rem 0;
   }
 }
 </style>

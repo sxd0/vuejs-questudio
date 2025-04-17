@@ -50,29 +50,12 @@
           </div>
 
           <!-- Комментарии к вопросу -->
-          <section class="question-comments">
-            <h3>Комментарии ({{ getCommentsCount(question.id) }})</h3>
-            <ul class="comments-list">
-              <li v-for="comment in getComments(question.id)" :key="comment.id" class="comment">
-                <p>{{ comment.body }}</p>
-                <div class="comment-meta">
-                  <span class="comment-author">{{ getUserName(comment.user_id) }}</span>
-                  <span class="comment-date">{{ formatDate(comment.created_at) }}</span>
-                </div>
-              </li>
-            </ul>
-            <form @submit.prevent="addComment" class="comment-form">
-              <div class="form-group">
-                <textarea 
-                  v-model="newComment" 
-                  placeholder="Добавить комментарий..." 
-                  rows="2" 
-                  required
-                ></textarea>
-              </div>
-              <button type="submit" class="btn-secondary">Отправить</button>
-            </form>
-          </section>
+          <CommentsList 
+            :comments="getComments(question.id)" 
+            :users="users" 
+            :parent-id="question.id"
+            @add-comment="addComment" 
+          />
         </article>
 
         <!-- Блок ответов -->
@@ -104,29 +87,12 @@
             </div>
 
             <!-- Комментарии к ответу -->
-            <section class="answer-comments">
-              <h4>Комментарии ({{ getCommentsCount(answer.id) }})</h4>
-              <ul class="comments-list">
-                <li v-for="comment in getComments(answer.id)" :key="comment.id" class="comment">
-                  <p>{{ comment.body }}</p>
-                  <div class="comment-meta">
-                    <span class="comment-author">{{ getUserName(comment.user_id) }}</span>
-                    <span class="comment-date">{{ formatDate(comment.created_at) }}</span>
-                  </div>
-                </li>
-              </ul>
-              <form @submit.prevent="addAnswerComment(answer.id)" class="comment-form">
-                <div class="form-group">
-                  <textarea 
-                    v-model="answerComments[answer.id]" 
-                    placeholder="Добавить комментарий..." 
-                    rows="2" 
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" class="btn-secondary">Отправить</button>
-              </form>
-            </section>
+            <CommentsList 
+              :comments="getComments(answer.id)" 
+              :users="users" 
+              :parent-id="answer.id"
+              @add-comment="addComment" 
+            />
           </article>
         </section>
 
@@ -151,8 +117,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import CommentsList from "../components/question/CommentsList.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -164,9 +131,7 @@ const tags = ref([]);
 const questionTags = ref([]);
 const loading = ref(true);
 const error = ref(null);
-const newComment = ref("");
 const newAnswer = ref("");
-const answerComments = ref({});
 
 // Загрузка данных
 onMounted(async () => {
@@ -194,11 +159,6 @@ onMounted(async () => {
     tags.value = data.tags;
     questionTags.value = data.question_tags;
     
-    // Инициализация объекта комментариев для ответов
-    getAnswers(questionId).forEach(answer => {
-      answerComments.value[answer.id] = "";
-    });
-    
     loading.value = false;
   } catch (error) {
     console.error("Error loading data:", error);
@@ -224,11 +184,6 @@ const getComments = (postId) => {
   return posts.value.filter(
     post => post.parent_id === postId && post.post_type === "comment"
   );
-};
-
-// Получение количества комментариев
-const getCommentsCount = (postId) => {
-  return getComments(postId).length;
 };
 
 // Получение имени пользователя по ID
@@ -275,18 +230,16 @@ const voteAnswer = (answerId, value) => {
   }
 };
 
-// Добавление комментария к вопросу
-const addComment = () => {
-  if (!newComment.value.trim()) return;
-
+// Добавление комментария (обработчик события от CommentsList)
+const addComment = ({ parentId, text }) => {
   const newCommentObj = {
     id: posts.value.length + 1,
     user_id: 2, // ID текущего пользователя (janedoe)
     title: null,
-    body: newComment.value,
+    body: text,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    parent_id: question.value.id,
+    parent_id: parentId,
     post_type: "comment",
     is_closed: false,
     is_visible: true,
@@ -294,31 +247,7 @@ const addComment = () => {
   };
 
   posts.value.push(newCommentObj);
-  newComment.value = "";
   alert("Комментарий добавлен");
-};
-
-// Добавление комментария к ответу
-const addAnswerComment = (answerId) => {
-  if (!answerComments.value[answerId] || !answerComments.value[answerId].trim()) return;
-
-  const newCommentObj = {
-    id: posts.value.length + 1,
-    user_id: 2, // ID текущего пользователя (janedoe)
-    title: null,
-    body: answerComments.value[answerId],
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    parent_id: answerId,
-    post_type: "comment",
-    is_closed: false,
-    is_visible: true,
-    vote_count: 0
-  };
-
-  posts.value.push(newCommentObj);
-  answerComments.value[answerId] = "";
-  alert("Комментарий к ответу добавлен");
 };
 
 // Добавление ответа на вопрос
@@ -340,7 +269,6 @@ const addAnswer = () => {
   };
 
   posts.value.push(newAnswerObj);
-  answerComments.value[newAnswerObj.id] = ""; // Инициализируем поле для комментария к новому ответу
   newAnswer.value = "";
   alert("Ответ добавлен");
 };
@@ -493,69 +421,6 @@ const addAnswer = () => {
   justify-content: space-between;
 }
 
-.question-comments,
-.answer-comments {
-  background-color: #f8f9fa;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #e4e6e8;
-}
-
-.question-comments h3,
-.answer-comments h4 {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  color: #3c4146;
-}
-
-.comments-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.comment {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #e4e6e8;
-}
-
-.comment:last-child {
-  border-bottom: none;
-}
-
-.comment p {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-}
-
-.comment-meta {
-  color: #6a737c;
-  font-size: 0.8rem;
-}
-
-.comment-author {
-  font-weight: 600;
-}
-
-.comment-date {
-  margin-left: 0.5rem;
-}
-
-.comment-form,
-.answer-form {
-  margin-top: 1rem;
-}
-
-.comment-form textarea,
-.answer-form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-  font-family: inherit;
-  font-size: 0.9rem;
-}
-
 .answers-section {
   margin-bottom: 2rem;
 }
@@ -588,14 +453,44 @@ const addAnswer = () => {
   color: #222;
 }
 
+.answer-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.answer-form textarea:focus {
+  border-color: #0077cc;
+  outline: none;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #005fa3;
+}
+
 @media print {
   .question-view {
     padding: 0;
   }
   
   .breadcrumbs, 
-  .comment-form, 
-  .answer-form,
   .vote-up,
   .vote-down,
   .add-answer-section {
@@ -606,15 +501,6 @@ const addAnswer = () => {
   .answer-article {
     box-shadow: none;
     margin-bottom: 1rem;
-    page-break-inside: avoid;
-  }
-  
-  .question-comments h3,
-  .answer-comments h4 {
-    page-break-after: avoid;
-  }
-  
-  .comment {
     page-break-inside: avoid;
   }
 }
@@ -647,8 +533,7 @@ const addAnswer = () => {
     font-size: 1.5rem;
   }
   
-  .comment-form button,
-  .answer-form button {
+  .btn-primary {
     width: 100%;
   }
 }

@@ -1,15 +1,15 @@
-<template>
+п»ї<template>
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
         <div class="copyright">
-          <p>&copy; 2024 QA Platform. Все права защищены.</p>
+          <p>&copy; 2024 QA Platform. Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.</p>
         </div>
         <div class="footer-links">
-          <a href="#">О нас</a>
-          <a href="#">Правила сайта</a>
-          <a href="#">Конфиденциальность</a>
-          <a href="#">Контакты</a>
+          <a href="#">Рћ РЅР°СЃ</a>
+          <a href="#">РџСЂР°РІРёР»Р° СЃР°Р№С‚Р°</a>
+          <a href="#">РљРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚СЊ</a>
+          <a href="#">РљРѕРЅС‚Р°РєС‚С‹</a>
         </div>
       </div>
     </div>

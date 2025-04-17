@@ -1,4 +1,4 @@
-<template>
+п»ї<template>
   <div class="app">
     <TheHeader />
     <RouterView />
@@ -13,7 +13,7 @@ import TheFooter from "./components/layout/TheFooter.vue";
 </script>
 
 <style>
-/* Сброс стилей */
+/* РЎР±СЂРѕСЃ СЃС‚РёР»РµР№ */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -37,7 +37,7 @@ body {
   padding: 0 1rem;
 }
 
-/* Адаптивные стили */
+/* РђРґР°РїС‚РёРІРЅС‹Рµ СЃС‚РёР»Рё */
 @media (max-width: 768px) {
   html {
     font-size: 14px;

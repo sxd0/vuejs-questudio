@@ -1,4 +1,4 @@
-<template>
+п»ї<template>
   <header class="site-header">
     <div class="container">
       <div class="header-content">
@@ -9,20 +9,20 @@
         </div>
         <nav class="main-nav">
           <ul>
-            <li><router-link to="/">Главная</router-link></li>
-            <li><router-link to="/ask">Задать вопрос</router-link></li>
-            <li><a href="/data/main.json" target="_blank">JSON данные</a></li>
-            <li><a href="https://github.com/yourusername/qa-platform" target="_blank">GitHub репозиторий</a></li>
+            <li><router-link to="/">Р“Р»Р°РІРЅР°СЏ</router-link></li>
+            <li><router-link to="/ask">Р—Р°РґР°С‚СЊ РІРѕРїСЂРѕСЃ</router-link></li>
+            <li><a href="/data/main.json" target="_blank">JSON РґР°РЅРЅС‹Рµ</a></li>
+            <li><a href="https://github.com/yourusername/qa-platform" target="_blank">GitHub СЂРµРїРѕР·РёС‚РѕСЂРёР№</a></li>
           </ul>
         </nav>
         <div class="user-panel">
           <div v-if="currentUser" class="logged-user">
             <span>{{ currentUser.username }}</span>
-            <button @click="logout" class="btn-logout">Выйти</button>
+            <button @click="logout" class="btn-logout">Р’С‹Р№С‚Рё</button>
           </div>
           <div v-else class="auth-links">
-            <router-link to="/login" class="btn-login">Войти</router-link>
-            <router-link to="/register" class="btn-register">Регистрация</router-link>
+            <router-link to="/login" class="btn-login">Р’РѕР№С‚Рё</router-link>
+            <router-link to="/register" class="btn-register">Р РµРіРёСЃС‚СЂР°С†РёСЏ</router-link>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ onMounted(async () => {
 
 const logout = () => {
   currentUser.value = null;
-  alert("Вы вышли из системы");
+  alert("Р’С‹ РІС‹С€Р»Рё РёР· СЃРёСЃС‚РµРјС‹");
 };
 </script>
 

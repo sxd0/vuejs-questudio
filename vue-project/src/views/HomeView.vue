@@ -1,22 +1,22 @@
-<template>
+п»ї<template>
   <main class="home-view">
     <section class="hero">
       <div class="container">
-        <h1>Вопросы и ответы для разработчиков</h1>
-        <p>Найдите ответы на ваши вопросы или помогите другим разработчикам</p>
+        <h1>Р’РѕРїСЂРѕСЃС‹ Рё РѕС‚РІРµС‚С‹ РґР»СЏ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєРѕРІ</h1>
+        <p>РќР°Р№РґРёС‚Рµ РѕС‚РІРµС‚С‹ РЅР° РІР°С€Рё РІРѕРїСЂРѕСЃС‹ РёР»Рё РїРѕРјРѕРіРёС‚Рµ РґСЂСѓРіРёРј СЂР°Р·СЂР°Р±РѕС‚С‡РёРєР°Рј</p>
         <div class="cta-buttons">
-          <router-link to="/ask" class="btn-primary">Задать вопрос</router-link>
-          <button @click="scrollToQuestions" class="btn-secondary">Смотреть вопросы</button>
+          <router-link to="/ask" class="btn-primary">Р—Р°РґР°С‚СЊ РІРѕРїСЂРѕСЃ</router-link>
+          <button @click="scrollToQuestions" class="btn-secondary">РЎРјРѕС‚СЂРµС‚СЊ РІРѕРїСЂРѕСЃС‹</button>
         </div>
         <div class="search-form">
           <form @submit.prevent="searchQuestions">
             <input
               type="search"
               v-model="searchQuery"
-              placeholder="Поиск вопросов..."
+              placeholder="РџРѕРёСЃРє РІРѕРїСЂРѕСЃРѕРІ..."
               inputmode="search"
             />
-            <button type="submit">Поиск</button>
+            <button type="submit">РџРѕРёСЃРє</button>
           </form>
         </div>
       </div>
@@ -25,32 +25,32 @@
     <section id="questions" class="questions-section">
       <div class="container">
         <div class="section-header">
-          <h2>Последние вопросы</h2>
+          <h2>РџРѕСЃР»РµРґРЅРёРµ РІРѕРїСЂРѕСЃС‹</h2>
           <div class="controls">
             <div class="filter">
-              <label for="tagFilter">Фильтр по тегу:</label>
+              <label for="tagFilter">Р¤РёР»СЊС‚СЂ РїРѕ С‚РµРіСѓ:</label>
               <select id="tagFilter" v-model="selectedTag" @change="filterQuestions">
-                <option value="">Все теги</option>
+                <option value="">Р’СЃРµ С‚РµРіРё</option>
                 <option v-for="tag in tags" :key="tag.id" :value="tag.id">
                   {{ tag.name }}
                 </option>
               </select>
             </div>
             <div class="sort">
-              <label for="sortOptions">Сортировка:</label>
+              <label for="sortOptions">РЎРѕСЂС‚РёСЂРѕРІРєР°:</label>
               <select id="sortOptions" v-model="sortOption" @change="sortQuestions">
-                <option value="newest">Новые</option>
-                <option value="votes">По голосам</option>
+                <option value="newest">РќРѕРІС‹Рµ</option>
+                <option value="votes">РџРѕ РіРѕР»РѕСЃР°Рј</option>
               </select>
             </div>
           </div>
         </div>
 
         <div class="questions-list">
-          <div v-if="loading" class="loading">Загрузка вопросов...</div>
+          <div v-if="loading" class="loading">Р—Р°РіСЂСѓР·РєР° РІРѕРїСЂРѕСЃРѕРІ...</div>
           <div v-else-if="filteredQuestions.length === 0" class="no-questions">
-            Вопросы не найдены. Попробуйте изменить параметры поиска или
-            <router-link to="/ask">задайте свой вопрос</router-link>.
+            Р’РѕРїСЂРѕСЃС‹ РЅРµ РЅР°Р№РґРµРЅС‹. РџРѕРїСЂРѕР±СѓР№С‚Рµ РёР·РјРµРЅРёС‚СЊ РїР°СЂР°РјРµС‚СЂС‹ РїРѕРёСЃРєР° РёР»Рё
+            <router-link to="/ask">Р·Р°РґР°Р№С‚Рµ СЃРІРѕР№ РІРѕРїСЂРѕСЃ</router-link>.
           </div>
           <div
             v-else
@@ -61,11 +61,11 @@
             <div class="question-stats">
               <div class="votes">
                 <span class="count">{{ question.vote_count }}</span>
-                <span class="label">голосов</span>
+                <span class="label">РіРѕР»РѕСЃРѕРІ</span>
               </div>
               <div class="answers">
                 <span class="count">{{ getAnswersCount(question.id) }}</span>
-                <span class="label">ответов</span>
+                <span class="label">РѕС‚РІРµС‚РѕРІ</span>
               </div>
             </div>
             <div class="question-content">
@@ -95,29 +95,29 @@
         </div>
 
         <div class="trust-elements">
-          <h3>Присоединяйтесь к сообществу разработчиков</h3>
+          <h3>РџСЂРёСЃРѕРµРґРёРЅСЏР№С‚РµСЃСЊ Рє СЃРѕРѕР±С‰РµСЃС‚РІСѓ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєРѕРІ</h3>
           <div class="stats">
             <div class="stat-item">
               <div class="stat-number">1,000+</div>
-              <div class="stat-label">Вопросов</div>
+              <div class="stat-label">Р’РѕРїСЂРѕСЃРѕРІ</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">5,000+</div>
-              <div class="stat-label">Ответов</div>
+              <div class="stat-label">РћС‚РІРµС‚РѕРІ</div>
             </div>
             <div class="stat-item">
               <div class="stat-number">10,000+</div>
-              <div class="stat-label">Пользователей</div>
+              <div class="stat-label">РџРѕР»СЊР·РѕРІР°С‚РµР»РµР№</div>
             </div>
           </div>
           <div class="testimonials">
             <div class="testimonial">
-              <p>"Благодаря этой платформе я смог быстро найти решение сложной проблемы с React компонентами."</p>
-              <div class="author">Алексей К., Frontend-разработчик</div>
+              <p>"Р‘Р»Р°РіРѕРґР°СЂСЏ СЌС‚РѕР№ РїР»Р°С‚С„РѕСЂРјРµ СЏ СЃРјРѕРі Р±С‹СЃС‚СЂРѕ РЅР°Р№С‚Рё СЂРµС€РµРЅРёРµ СЃР»РѕР¶РЅРѕР№ РїСЂРѕР±Р»РµРјС‹ СЃ React РєРѕРјРїРѕРЅРµРЅС‚Р°РјРё."</p>
+              <div class="author">РђР»РµРєСЃРµР№ Рљ., Frontend-СЂР°Р·СЂР°Р±РѕС‚С‡РёРє</div>
             </div>
             <div class="testimonial">
-              <p>"Отличное сообщество профессионалов! Всегда получаю квалифицированные ответы на свои вопросы."</p>
-              <div class="author">Мария С., Full Stack Developer</div>
+              <p>"РћС‚Р»РёС‡РЅРѕРµ СЃРѕРѕР±С‰РµСЃС‚РІРѕ РїСЂРѕС„РµСЃСЃРёРѕРЅР°Р»РѕРІ! Р’СЃРµРіРґР° РїРѕР»СѓС‡Р°СЋ РєРІР°Р»РёС„РёС†РёСЂРѕРІР°РЅРЅС‹Рµ РѕС‚РІРµС‚С‹ РЅР° СЃРІРѕРё РІРѕРїСЂРѕСЃС‹."</p>
+              <div class="author">РњР°СЂРёСЏ РЎ., Full Stack Developer</div>
             </div>
           </div>
         </div>
@@ -139,13 +139,13 @@ const searchQuery = ref("");
 const selectedTag = ref("");
 const sortOption = ref("newest");
 
-// Загрузка данных
+// Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…
 onMounted(async () => {
   try {
     const response = await fetch("/data/main.json");
     const data = await response.json();
     
-    // Получаем только посты с типом "question"
+    // РџРѕР»СѓС‡Р°РµРј С‚РѕР»СЊРєРѕ РїРѕСЃС‚С‹ СЃ С‚РёРїРѕРј "question"
     questions.value = data.posts.filter(post => post.post_type === "question");
     users.value = data.users;
     tags.value = data.tags;
@@ -158,11 +158,11 @@ onMounted(async () => {
   }
 });
 
-// Фильтрация и сортировка вопросов
+// Р¤РёР»СЊС‚СЂР°С†РёСЏ Рё СЃРѕСЂС‚РёСЂРѕРІРєР° РІРѕРїСЂРѕСЃРѕРІ
 const filteredQuestions = computed(() => {
   let result = [...questions.value];
   
-  // Поиск по запросу
+  // РџРѕРёСЃРє РїРѕ Р·Р°РїСЂРѕСЃСѓ
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(
@@ -172,7 +172,7 @@ const filteredQuestions = computed(() => {
     );
   }
   
-  // Фильтр по тегу
+  // Р¤РёР»СЊС‚СЂ РїРѕ С‚РµРіСѓ
   if (selectedTag.value) {
     const tagId = parseInt(selectedTag.value);
     const questionIds = questionTags.value
@@ -181,7 +181,7 @@ const filteredQuestions = computed(() => {
     result = result.filter(question => questionIds.includes(question.id));
   }
   
-  // Сортировка
+  // РЎРѕСЂС‚РёСЂРѕРІРєР°
   if (sortOption.value === "newest") {
     result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   } else if (sortOption.value === "votes") {
@@ -191,20 +191,20 @@ const filteredQuestions = computed(() => {
   return result;
 });
 
-// Методы
+// РњРµС‚РѕРґС‹
 const searchQuestions = () => {
-  // searchQuery уже обновлен через v-model
-  // фильтрация происходит автоматически через computed
+  // searchQuery СѓР¶Рµ РѕР±РЅРѕРІР»РµРЅ С‡РµСЂРµР· v-model
+  // С„РёР»СЊС‚СЂР°С†РёСЏ РїСЂРѕРёСЃС…РѕРґРёС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё С‡РµСЂРµР· computed
 };
 
 const filterQuestions = () => {
-  // selectedTag уже обновлен через v-model
-  // фильтрация происходит автоматически через computed
+  // selectedTag СѓР¶Рµ РѕР±РЅРѕРІР»РµРЅ С‡РµСЂРµР· v-model
+  // С„РёР»СЊС‚СЂР°С†РёСЏ РїСЂРѕРёСЃС…РѕРґРёС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё С‡РµСЂРµР· computed
 };
 
 const sortQuestions = () => {
-  // sortOption уже обновлен через v-model
-  // сортировка происходит автоматически через computed
+  // sortOption СѓР¶Рµ РѕР±РЅРѕРІР»РµРЅ С‡РµСЂРµР· v-model
+  // СЃРѕСЂС‚РёСЂРѕРІРєР° РїСЂРѕРёСЃС…РѕРґРёС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё С‡РµСЂРµР· computed
 };
 
 const scrollToQuestions = () => {
@@ -219,7 +219,7 @@ const getAnswersCount = (questionId) => {
 
 const getUserName = (userId) => {
   const user = users.value.find(user => user.id === userId);
-  return user ? user.username : "Неизвестный пользователь";
+  return user ? user.username : "РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ";
 };
 
 const getQuestionTags = (questionId) => {
@@ -249,7 +249,7 @@ const formatDate = (dateString) => {
 </script>
 
 <style>
-/* Общие стили */
+/* РћР±С‰РёРµ СЃС‚РёР»Рё */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
@@ -259,7 +259,7 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Секция Hero */
+/* РЎРµРєС†РёСЏ Hero */
 .hero {
   background-color: #0077cc;
   color: white;
@@ -346,7 +346,7 @@ body {
   background-color: #e65c00;
 }
 
-/* Секция вопросов */
+/* РЎРµРєС†РёСЏ РІРѕРїСЂРѕСЃРѕРІ */
 .questions-section {
   padding: 3rem 0;
 }
@@ -502,7 +502,7 @@ body {
   margin-left: 0.5rem;
 }
 
-/* Элементы доверия */
+/* Р­Р»РµРјРµРЅС‚С‹ РґРѕРІРµСЂРёСЏ */
 .trust-elements {
   margin-top: 3rem;
   text-align: center;
@@ -563,7 +563,7 @@ body {
   color: #333;
 }
 
-/* Адаптивность */
+/* РђРґР°РїС‚РёРІРЅРѕСЃС‚СЊ */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2rem;

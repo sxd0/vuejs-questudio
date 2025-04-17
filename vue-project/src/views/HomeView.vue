@@ -38,7 +38,6 @@ const sortBy = ref('newest');
 const filterTag = ref('');
 const searchQuery = ref('');
 
-// Загрузка данных
 onMounted(async () => {
   try {
     const response = await axios.get('/data/main.json');
@@ -50,7 +49,6 @@ onMounted(async () => {
   }
 });
 
-// Обновление параметров сортировки и фильтрации
 const updateSort = (sort) => {
   sortBy.value = sort;
 };
@@ -59,17 +57,12 @@ const updateFilter = (filter) => {
   filterTag.value = filter;
 };
 
-// Фильтрация и сортировка вопросов
 const filteredQuestions = computed(() => {
   let result = [...questions.value];
   
-  // Фильтрация по тегам если указан фильтр
   if (filterTag.value) {
-    // В реальном приложении здесь будет логика фильтрации по тегам
-    // Для упрощения демонстрации просто возвращаем все вопросы
   }
   
-  // Сортировка вопросов
   result.sort((a, b) => {
     switch (sortBy.value) {
       case 'newest':

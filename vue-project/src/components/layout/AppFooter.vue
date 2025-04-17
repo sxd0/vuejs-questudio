@@ -22,7 +22,7 @@
               <h3>Ресурсы</h3>
               <ul>
                 <li><a href="/data/main.json" target="_blank">JSON данные</a></li>
-                <li><a href="https://github.com/username/webexam2023" target="_blank">GitHub репозиторий</a></li>
+                <li><a href="https://github.com/sxd0/vuejs-questudio.git" target="_blank">GitHub репозиторий</a></li>
                 <li><router-link to="/faq">FAQ</router-link></li>
                 <li><router-link to="/contact">Контакты</router-link></li>
               </ul>
@@ -75,7 +75,6 @@
   const email = ref('');
   
   const subscribeNewsletter = () => {
-    // В реальном приложении здесь будет логика подписки на рассылку
     alert(`Спасибо за подписку! Email: ${email.value}`);
     email.value = '';
   };

@@ -95,7 +95,6 @@
           return bCount - aCount;
         });
       case 'newest':
-        // В нашем случае у тегов нет даты создания, так что просто сортируем по ID
         return tagsCopy.sort((a, b) => b.id - a.id);
       default:
         return tagsCopy;

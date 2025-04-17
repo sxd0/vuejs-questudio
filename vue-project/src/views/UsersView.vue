@@ -119,8 +119,6 @@
   };
   
   const getUserReputation = (userId) => {
-    // В реальном приложении здесь была бы сложная логика расчета репутации
-    // Для демонстрации используем упрощенную версию: сумма голосов для вопросов и ответов
     if (!allData.value.votes || !allData.value.posts) return 0;
     
     const userPosts = allData.value.posts.filter(post => post.user_id === userId);
@@ -166,7 +164,6 @@
       }
     });
     
-    // Пагинация
     const startIndex = (currentPage.value - 1) * usersPerPage;
     const endIndex = startIndex + usersPerPage;
     return sorted.slice(startIndex, endIndex);

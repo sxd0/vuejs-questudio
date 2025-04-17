@@ -194,20 +194,16 @@
     
     isSubmitting.value = true;
     
-    // Имитация отправки данных на сервер
     setTimeout(() => {
       const newQuestion = {
         ...questionData.value,
         createdAt: new Date().toISOString()
       };
       
-      // В реальном приложении здесь был бы запрос к API
       console.log('Новый вопрос:', newQuestion);
       
-      // Показываем сообщение об успешной публикации
       alert('Ваш вопрос успешно опубликован!');
       
-      // Перенаправляем на главную страницу
       router.push('/');
       
       isSubmitting.value = false;
@@ -215,7 +211,6 @@
   };
   
   const resetForm = () => {
-    // Спрашиваем подтверждение, если форма не пуста
     if (
       questionData.value.title.trim() ||
       questionData.value.body.trim() ||

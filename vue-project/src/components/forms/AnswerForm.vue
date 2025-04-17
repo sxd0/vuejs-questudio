@@ -54,7 +54,6 @@
     
     isSubmitting.value = true;
     
-    // Имитация задержки отправки данных
     setTimeout(() => {
       const answerData = {
         body: answerBody.value,

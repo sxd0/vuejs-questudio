@@ -29,11 +29,8 @@
   const search = () => {
     if (!searchQuery.value.trim()) return;
     
-    // В реальном приложении здесь был бы переход на страницу с результатами поиска
-    // Для демонстрации просто выводим сообщение
     alert(`Поиск: ${searchQuery.value}`);
     
-    // Очищаем поле поиска
     searchQuery.value = '';
   };
   </script>

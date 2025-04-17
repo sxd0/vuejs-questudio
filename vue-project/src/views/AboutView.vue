@@ -133,7 +133,7 @@
             Проект реализован с использованием Vue.js 3, Vue Router, Composition API и других современных веб-технологий. Все данные загружаются из JSON-файла без обращения к серверу.
           </p>
           <p>
-            Репозиторий проекта доступен на <a href="https://github.com/username/webexam2023" target="_blank">GitHub</a>.
+            Репозиторий проекта доступен на <a href="https://github.com/sxd0/vuejs-questudio.git" target="_blank">GitHub</a>.
           </p>
         </section>
       </div>

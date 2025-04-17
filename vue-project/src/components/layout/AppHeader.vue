@@ -14,7 +14,7 @@
             <li><router-link to="/users">Пользователи</router-link></li>
             <li><router-link to="/about">О нас</router-link></li>
             <li class="json-link"><a href="/data/main.json" target="_blank">JSON</a></li>
-            <li class="repo-link"><a href="https://github.com/username/webexam2023" target="_blank">GitHub</a></li>
+            <li class="repo-link"><a href="https://github.com/sxd0/vuejs-questudio.git" target="_blank">GitHub</a></li>
           </ul>
         </nav>
         
@@ -42,7 +42,7 @@
           <li><router-link to="/users" @click="closeMobileMenu">Пользователи</router-link></li>
           <li><router-link to="/about" @click="closeMobileMenu">О нас</router-link></li>
           <li><a href="/data/main.json" target="_blank" @click="closeMobileMenu">JSON</a></li>
-          <li><a href="https://github.com/username/webexam2023" target="_blank" @click="closeMobileMenu">GitHub</a></li>
+          <li><a href="https://github.com/sxd0/vuejs-questudio.git" target="_blank" @click="closeMobileMenu">GitHub</a></li>
         </ul>
         
         <div class="mobile-user-actions">
@@ -208,11 +208,9 @@
   };
   
   const login = () => {
-    // В реальном приложении здесь будет логика авторизации
     alert(`Выполняется вход: ${loginData.value.email}`);
     showLoginForm.value = false;
     
-    // Имитация успешной авторизации
     currentUser.value = {
       id: 1,
       username: 'johndoe',
@@ -222,7 +220,6 @@
       isAdmin: false
     };
     
-    // Очистка формы
     loginData.value = {
       email: '',
       password: ''
@@ -230,17 +227,14 @@
   };
   
   const register = () => {
-    // Валидация совпадения паролей
     if (registerData.value.password !== registerData.value.passwordConfirm) {
       alert('Пароли не совпадают!');
       return;
     }
     
-    // В реальном приложении здесь будет логика регистрации
     alert(`Регистрация нового пользователя: ${registerData.value.username}`);
     showRegisterForm.value = false;
     
-    // Имитация успешной регистрации
     currentUser.value = {
       id: 10,
       username: registerData.value.username,
@@ -250,7 +244,6 @@
       isAdmin: false
     };
     
-    // Очистка формы
     registerData.value = {
       username: '',
       email: '',
@@ -260,7 +253,6 @@
   };
   
   const logout = () => {
-    // В реальном приложении здесь будет логика выхода
     currentUser.value = {
       id: null,
       username: '',

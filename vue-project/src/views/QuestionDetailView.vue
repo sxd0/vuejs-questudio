@@ -123,7 +123,6 @@ const allData = ref({});
 const isLoading = ref(true);
 const error = ref(null);
 
-// Загрузка всех данных
 onMounted(async () => {
   try {
     const response = await axios.get('/data/main.json');
@@ -135,7 +134,6 @@ onMounted(async () => {
   }
 });
 
-// Получаем данные о вопросе и связанных объектах
 const question = computed(() => {
   if (!allData.value.posts) return null;
   return allData.value.posts.find(post => post.id === questionId.value && post.post_type === 'question');
@@ -153,10 +151,8 @@ const answersCount = computed(() => answers.value.length);
 const relatedQuestions = computed(() => {
   if (!allData.value.posts || !question.value) return [];
   
-  // Находим теги текущего вопроса
   const currentTags = getQuestionTags(questionId.value);
   
-  // Находим вопросы с похожими тегами
   return allData.value.posts
     .filter(post => 
       post.id !== questionId.value && 
@@ -166,7 +162,6 @@ const relatedQuestions = computed(() => {
     .slice(0, 5);
 });
 
-// Вспомогательные функции
 const getQuestionTags = (id) => {
   if (!allData.value.postsTags) return [];
   return allData.value.postsTags
@@ -201,29 +196,23 @@ const formatDate = (dateString) => {
   });
 };
 
-// Обработчики действий
 const upvoteQuestion = () => {
-  // В реальном приложении здесь будет логика голосования
   alert('Голос за вопрос учтен!');
 };
 
 const downvoteQuestion = () => {
-  // В реальном приложении здесь будет логика голосования
   alert('Голос против вопроса учтен!');
 };
 
 const upvoteAnswer = (answerId) => {
-  // В реальном приложении здесь будет логика голосования
   alert(`Голос за ответ #${answerId} учтен!`);
 };
 
 const downvoteAnswer = (answerId) => {
-  // В реальном приложении здесь будет логика голосования
   alert(`Голос против ответа #${answerId} учтен!`);
 };
 
 const addAnswer = (answerData) => {
-  // В реальном приложении здесь будет логика добавления ответа
   alert('Ваш ответ добавлен!');
 };
 </script>

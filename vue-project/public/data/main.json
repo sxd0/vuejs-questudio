@@ -1,0 +1,214 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johndoe",
+      "email": "john@example.com",
+      "password_hash": "hashed_password",
+      "created_at": "2024-02-15T10:00:00Z",
+      "updated_at": "2024-02-15T10:00:00Z",
+      "is_admin": false,
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "username": "janedoe",
+      "email": "jane@example.com",
+      "password_hash": "hashed_password",
+      "created_at": "2024-02-16T11:30:00Z",
+      "updated_at": "2024-02-16T11:30:00Z",
+      "is_admin": false,
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "username": "admin",
+      "email": "admin@example.com",
+      "password_hash": "hashed_password",
+      "created_at": "2024-02-14T09:15:00Z",
+      "updated_at": "2024-02-14T09:15:00Z",
+      "is_admin": true,
+      "is_active": true
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "title": "Как работают замыкания в JavaScript?",
+      "body": "Я только начинаю изучать JavaScript и не могу до конца понять концепцию замыканий. Можете объяснить простыми словами, что такое замыкание и привести практический пример?",
+      "created_at": "2024-03-01T14:25:00Z",
+      "updated_at": "2024-03-01T14:25:00Z",
+      "parent_id": null,
+      "post_type": "question",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 5
+    },
+    {
+      "id": 2,
+      "user_id": 2,
+      "title": null,
+      "body": "Замыкание в JavaScript — это функция, которая запоминает свою внешнюю среду (переменные) в момент создания. Простыми словами, функция \"запоминает\" все переменные, которые были доступны ей в момент определения, даже если она вызывается в совершенно другом месте. Пример:\n\n```javascript\nfunction createCounter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  };\n}\n\nconst counter = createCounter();\nconsole.log(counter()); // 1\nconsole.log(counter()); // 2\nconsole.log(counter()); // 3\n```\n\nВ этом примере внутренняя функция имеет доступ к переменной `count`, даже после того, как функция `createCounter` завершила выполнение.",
+      "created_at": "2024-03-01T15:10:00Z",
+      "updated_at": "2024-03-01T15:10:00Z",
+      "parent_id": 1,
+      "post_type": "answer",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 7
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "title": null,
+      "body": "Спасибо за понятное объяснение! Теперь гораздо яснее.",
+      "created_at": "2024-03-01T16:05:00Z",
+      "updated_at": "2024-03-01T16:05:00Z",
+      "parent_id": 2,
+      "post_type": "comment",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 1
+    },
+    {
+      "id": 4,
+      "user_id": 3,
+      "title": "Как использовать Vuex в Vue 3?",
+      "body": "Я переходил с Vue 2 на Vue 3 и столкнулся с проблемами при использовании Vuex. Какие есть особенности работы Vuex в Vue 3 и как правильно его настроить? Буду благодарен за примеры кода.",
+      "created_at": "2024-03-02T10:15:00Z",
+      "updated_at": "2024-03-02T10:15:00Z",
+      "parent_id": null,
+      "post_type": "question",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 3
+    },
+    {
+      "id": 5,
+      "user_id": 2,
+      "title": null,
+      "body": "В Vue 3 можно использовать Vuex 4, который адаптирован для работы с Composition API. Основные изменения связаны с установкой и созданием хранилища. Вот пример:\n\n```javascript\n// store/index.js\nimport { createStore } from \"vuex\";\n\nexport default createStore({\n  state: {\n    count: 0\n  },\n  mutations: {\n    increment(state) {\n      state.count++;\n    }\n  },\n  actions: {\n    incrementAsync({ commit }) {\n      setTimeout(() => {\n        commit(\"increment\");\n      }, 1000);\n    }\n  },\n  getters: {\n    doubleCount: (state) => state.count * 2\n  }\n});\n```\n\nА в main.js:\n\n```javascript\nimport { createApp } from \"vue\";\nimport App from \"./App.vue\";\nimport store from \"./store\";\n\ncreateApp(App).use(store).mount(\"#app\");\n```\n\nВ компонентах с Composition API используйте useStore:\n\n```javascript\nimport { computed } from \"vue\";\nimport { useStore } from \"vuex\";\n\nexport default {\n  setup() {\n    const store = useStore();\n    \n    return {\n      count: computed(() => store.state.count),\n      doubleCount: computed(() => store.getters.doubleCount),\n      increment: () => store.commit(\"increment\"),\n      incrementAsync: () => store.dispatch(\"incrementAsync\")\n    };\n  }\n};\n```\n\nТакже рекомендую рассмотреть Pinia как альтернативу Vuex для Vue 3, она проще в использовании и лучше интегрирована с TypeScript.",
+      "created_at": "2024-03-02T11:30:00Z",
+      "updated_at": "2024-03-02T11:30:00Z",
+      "parent_id": 4,
+      "post_type": "answer",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 5
+    },
+    {
+      "id": 6,
+      "user_id": 1,
+      "title": "Как создать адаптивную верстку с CSS Grid?",
+      "body": "Хочу использовать CSS Grid для создания адаптивного макета сайта. Какие есть лучшие практики и примеры использования Grid для адаптивной верстки? Интересует особенно как сделать разное количество колонок на разных устройствах.",
+      "created_at": "2024-03-03T09:45:00Z",
+      "updated_at": "2024-03-03T09:45:00Z",
+      "parent_id": null,
+      "post_type": "question",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 4
+    },
+    {
+      "id": 7,
+      "user_id": 3,
+      "title": null,
+      "body": "Для создания адаптивной верстки с CSS Grid, можно использовать функцию repeat() вместе с minmax() и auto-fit или auto-fill. Вот пример:\n\n```css\n.grid-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n  gap: 20px;\n}\n```\n\nЭтот код создаст столько колонок, сколько поместится, при этом минимальная ширина колонки будет 250px, а максимальная - занимать доступное пространство. \n\nРазличия между auto-fit и auto-fill:\n- auto-fit: растягивает элементы, чтобы заполнить всю строку, когда элементов недостаточно\n- auto-fill: оставляет пустые колонки, если элементов недостаточно\n\nТакже можно использовать медиа-запросы для еще более точного контроля:\n\n```css\n.grid-container {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 20px;\n}\n\n@media (min-width: 600px) {\n  .grid-container {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n@media (min-width: 900px) {\n  .grid-container {\n    grid-template-columns: repeat(3, 1fr);\n  }\n}\n\n@media (min-width: 1200px) {\n  .grid-container {\n    grid-template-columns: repeat(4, 1fr);\n  }\n}\n```\n\nТакой подход дает более точный контроль над количеством колонок на разных устройствах.",
+      "created_at": "2024-03-03T10:20:00Z",
+      "updated_at": "2024-03-03T10:20:00Z",
+      "parent_id": 6,
+      "post_type": "answer",
+      "is_closed": false,
+      "is_visible": true,
+      "vote_count": 6
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "name": "javascript",
+      "description": "JavaScript  это мультипарадигменный язык программирования. Поддерживает объектно-ориентированный, императивный и функциональный стили."
+    },
+    {
+      "id": 2,
+      "name": "vue.js",
+      "description": "Vue.js  JavaScript-фреймворк с открытым исходным кодом для создания пользовательских интерфейсов."
+    },
+    {
+      "id": 3,
+      "name": "css",
+      "description": "CSS (Cascading Style Sheets)  формальный язык описания внешнего вида документа, написанного с использованием языка разметки."
+    },
+    {
+      "id": 4,
+      "name": "html",
+      "description": "HTML (HyperText Markup Language)  стандартизированный язык разметки документов для просмотра веб-страниц в браузере."
+    },
+    {
+      "id": 5,
+      "name": "vuex",
+      "description": "Vuex  паттерн управления состоянием и библиотека для приложений на Vue.js. Он служит централизованным хранилищем данных для всех компонентов приложения."
+    }
+  ],
+  "question_tags": [
+    {
+      "id": 1,
+      "question_id": 1,
+      "tag_id": 1
+    },
+    {
+      "id": 2,
+      "question_id": 4,
+      "tag_id": 2
+    },
+    {
+      "id": 3,
+      "question_id": 4,
+      "tag_id": 5
+    },
+    {
+      "id": 4,
+      "question_id": 6,
+      "tag_id": 3
+    },
+    {
+      "id": 5,
+      "question_id": 6,
+      "tag_id": 4
+    }
+  ],
+  "votes": [
+    {
+      "id": 1,
+      "user_id": 2,
+      "post_id": 1,
+      "vote_type": 1
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "post_id": 1,
+      "vote_type": 1
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "post_id": 2,
+      "vote_type": 1
+    },
+    {
+      "id": 4,
+      "user_id": 3,
+      "post_id": 2,
+      "vote_type": 1
+    }
+  ],
+  "current_user": {
+    "id": 2,
+    "username": "janedoe",
+    "email": "jane@example.com",
+    "is_admin": false,
+    "is_active": true
+  }
+}

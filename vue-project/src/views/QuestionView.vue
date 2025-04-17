@@ -6,11 +6,11 @@
       </div>
       <div v-else-if="error" class="error">
         <p>{{ error }}</p>
-        <router-link to="/" class="btn-primary">Вернуться на главную</router-link>
+        <BaseButton @click="$router.push(`/`)" variant="primary">Вернуться на главную</BaseButton>
       </div>
       <div v-else class="question-details">
         <!-- Хлебные крошки -->
-        <div class="breadcrumbs">
+        <div class="breadcrumbs" aria-label="Навигация по сайту">
           <router-link to="/">Главная</router-link>
           <span class="separator">/</span>
           <span class="current">{{ question.title }}</span>
@@ -24,9 +24,9 @@
               <span class="date">Задан {{ formatDate(question.created_at) }}</span>
               <span class="views">Просмотров: 1.2K</span>
               <div class="tags">
-                <span v-for="tagId in getQuestionTags(question.id)" :key="tagId" class="tag">
+                <TagBadge v-for="tagId in getQuestionTags(question.id)" :key="tagId">
                   {{ getTagName(tagId) }}
-                </span>
+                </TagBadge>
               </div>
             </div>
           </header>
@@ -100,15 +100,15 @@
         <section class="add-answer-section">
           <h2>Ваш ответ</h2>
           <form @submit.prevent="addAnswer" class="answer-form">
-            <div class="form-group">
-              <textarea 
-                v-model="newAnswer" 
-                placeholder="Напишите свой ответ здесь..." 
-                rows="6" 
-                required
-              ></textarea>
-            </div>
-            <button type="submit" class="btn-primary">Отправить ответ</button>
+            <BaseTextarea
+              id="answer-body"
+              v-model="newAnswer"
+              label="Текст ответа"
+              placeholder="Напишите свой ответ здесь..."
+              :rows="6"
+              required
+            />
+            <BaseButton type="submit" variant="primary">Отправить ответ</BaseButton>
           </form>
         </section>
       </div>
@@ -117,12 +117,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import CommentsList from "../components/question/CommentsList.vue";
+import BaseButton from "../components/ui/BaseButton.vue";
+import BaseTextarea from "../components/ui/BaseTextarea.vue";
+import TagBadge from "../components/ui/TagBadge.vue";
 
 const route = useRoute();
 const router = useRouter();
+const toast = inject("toast");
 
 const question = ref(null);
 const posts = ref([]);
@@ -218,7 +222,7 @@ const formatDate = (dateString) => {
 // Голосование за вопрос
 const voteQuestion = (value) => {
   question.value.vote_count += value;
-  alert(`Вы проголосовали ${value > 0 ? "за" : "против"} вопрос`);
+  toast.success(`Вы проголосовали ${value > 0 ? "за" : "против"} вопрос`);
 };
 
 // Голосование за ответ
@@ -226,7 +230,7 @@ const voteAnswer = (answerId, value) => {
   const answer = posts.value.find(post => post.id === answerId);
   if (answer) {
     answer.vote_count += value;
-    alert(`Вы проголосовали ${value > 0 ? "за" : "против"} ответ`);
+    toast.success(`Вы проголосовали ${value > 0 ? "за" : "против"} ответ`);
   }
 };
 
@@ -247,7 +251,7 @@ const addComment = ({ parentId, text }) => {
   };
 
   posts.value.push(newCommentObj);
-  alert("Комментарий добавлен");
+  toast.success("Комментарий успешно добавлен");
 };
 
 // Добавление ответа на вопрос
@@ -270,7 +274,7 @@ const addAnswer = () => {
 
   posts.value.push(newAnswerObj);
   newAnswer.value = "";
-  alert("Ответ добавлен");
+  toast.success("Ваш ответ успешно добавлен");
 };
 </script>
 
@@ -353,15 +357,6 @@ const addAnswer = () => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.tag {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  background-color: #e1ecf4;
-  color: #39739d;
-  border-radius: 4px;
-  font-size: 0.75rem;
 }
 
 .question-content,
@@ -453,38 +448,6 @@ const addAnswer = () => {
   color: #222;
 }
 
-.answer-form textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-  font-family: inherit;
-  font-size: 0.9rem;
-}
-
-.answer-form textarea:focus {
-  border-color: #0077cc;
-  outline: none;
-}
-
-.btn-primary {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-primary:hover {
-  background-color: #005fa3;
-}
-
 @media print {
   .question-view {
     padding: 0;
@@ -531,10 +494,6 @@ const addAnswer = () => {
   
   .question-header h1 {
     font-size: 1.5rem;
-  }
-  
-  .btn-primary {
-    width: 100%;
   }
 }
 </style>

@@ -1,16 +1,18 @@
 ﻿<template>
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container">
       <div class="footer-content">
         <div class="copyright">
           <p>&copy; 2024 QA Platform. Все права защищены.</p>
         </div>
-        <div class="footer-links">
-          <a href="#">О нас</a>
-          <a href="#">Правила сайта</a>
-          <a href="#">Конфиденциальность</a>
-          <a href="#">Контакты</a>
-        </div>
+        <nav class="footer-nav" aria-label="Нижняя навигация">
+          <ul class="footer-links">
+            <li><a href="#">О нас</a></li>
+            <li><a href="#">Правила сайта</a></li>
+            <li><a href="#">Конфиденциальность</a></li>
+            <li><a href="#">Контакты</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
   </footer>
@@ -37,6 +39,9 @@
 .footer-links {
   display: flex;
   gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-links a {

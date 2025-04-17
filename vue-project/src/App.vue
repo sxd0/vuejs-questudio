@@ -1,8 +1,12 @@
 ﻿<template>
   <div class="app">
+    <SkipLink />
     <TheHeader />
-    <RouterView />
+    <main id="main-content" class="main-content">
+      <RouterView />
+    </main>
     <TheFooter />
+    <ToastsManager />
   </div>
 </template>
 
@@ -10,6 +14,8 @@
 import { RouterView } from "vue-router";
 import TheHeader from "./components/layout/TheHeader.vue";
 import TheFooter from "./components/layout/TheFooter.vue";
+import SkipLink from "./components/ui/SkipLink.vue";
+import ToastsManager from "./components/layout/ToastsManager.vue";
 </script>
 
 <style>
@@ -35,6 +41,16 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.main-content {
+  min-height: calc(100vh - 400px); /* Минимальная высота для основного контента */
+}
+
+/* Фокус для клавиатурной навигации */
+:focus-visible {
+  outline: 3px solid #0077cc;
+  outline-offset: 2px;
 }
 
 /* Адаптивные стили */

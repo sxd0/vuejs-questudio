@@ -1,4 +1,4 @@
-/* Общие стили */
+п»ї/* РћР±С‰РёРµ СЃС‚РёР»Рё */
 :root {
   --primary-color: #0077cc;
   --secondary-color: #ff6b00;
@@ -10,7 +10,7 @@
   --shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Сброс стилей */
+/* РЎР±СЂРѕСЃ СЃС‚РёР»РµР№ */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -24,14 +24,14 @@ body {
   background-color: var(--background-color);
 }
 
-/* Контейнер */
+/* РљРѕРЅС‚РµР№РЅРµСЂ */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-/* Типография */
+/* РўРёРїРѕРіСЂР°С„РёСЏ */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
@@ -49,7 +49,7 @@ a:hover {
   color: #005fa3;
 }
 
-/* Кнопки */
+/* РљРЅРѕРїРєРё */
 .btn {
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -80,7 +80,7 @@ a:hover {
   background-color: rgba(0, 119, 204, 0.1);
 }
 
-/* Формы */
+/* Р¤РѕСЂРјС‹ */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -117,7 +117,7 @@ textarea:focus {
   outline: none;
 }
 
-/* Карточки */
+/* РљР°СЂС‚РѕС‡РєРё */
 .card {
   background-color: white;
   border-radius: 8px;
@@ -125,14 +125,87 @@ textarea:focus {
   overflow: hidden;
 }
 
-/* Для печати */
+/* Р”Р»СЏ РїРµС‡Р°С‚Рё */
 @media print {
-  header, footer, .no-print {
+  body {
+    background-color: white;
+    color: black;
+    font-size: 12pt;
+  }
+
+  .header, .footer, 
+  button, 
+  .breadcrumbs, 
+  form, 
+  .add-answer-section,
+  .no-print {
     display: none !important;
+  }
+
+  .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .question-view,
+  .question-article,
+  .answer-article {
+    page-break-inside: avoid;
+    box-shadow: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .question-header,
+  .question-body,
+  .question-votes,
+  .answer-body {
+    padding: 0.5rem;
+  }
+
+  .question-meta {
+    font-size: 10pt;
+  }
+
+  .tag {
+    border: 1px solid #ccc;
+    color: black;
+    background: none;
+  }
+
+  .question-content,
+  .answer-content {
+    display: block;
+  }
+
+  .question-votes,
+  .answer-votes {
+    display: none;
+  }
+
+  /* Р”Р»СЏ СЌРєРѕРЅРѕРјРёРё С‡РµСЂРЅРёР» */
+  img {
+    max-width: 100%;
+    page-break-inside: avoid;
   }
 }
 
-/* Адаптивность */
+/* РђРґР°РїС‚РёРІРЅРѕСЃС‚СЊ */
 @media (max-width: 768px) {
   h1 {
     font-size: 1.8rem;
